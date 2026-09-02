@@ -33,17 +33,47 @@ const { title = "Rares Cazan" } = Astro.props;
     <script is:inline src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script is:inline>
       $(document).ready(function () {
+        // Smooth scroll on click
         $(".scroll").click(function (event) {
           if (this.hash !== "") {
             event.preventDefault();
             var hash = this.hash;
-            $("html, body").animate({ scrollTop: $(hash).offset().top }, 500, function () {
-              window.location.hash = hash;
-            });
-            $(".navbar-default a").removeClass("selected");
-            $(this).addClass("selected");
+            var target = $(hash);
+            if (target.length) {
+              $("html, body").animate({ scrollTop: target.offset().top }, 500, function () {
+                window.location.hash = hash;
+              });
+              $(".navbar-default a").removeClass("selected");
+              $(this).addClass("selected");
+            }
           }
         });
+
+        // Scrollspy: update active link as page is scrolled
+        const sections = document.querySelectorAll("div.content-section[id]");
+        const navLinks = document.querySelectorAll(".navbar-nav a.scroll");
+
+        function updateScrollSpy() {
+          const scrollPos = window.scrollY + 200; // navbar offset threshold
+
+          sections.forEach((section) => {
+            const top = section.offsetTop;
+            const height = section.offsetHeight;
+            const id = section.getAttribute("id");
+
+            if (scrollPos >= top && scrollPos < top + height) {
+              navLinks.forEach((link) => {
+                link.classList.remove("selected");
+                if (link.getAttribute("href") === `#${id}`) {
+                  link.classList.add("selected");
+                }
+              });
+            }
+          });
+        }
+
+        window.addEventListener("scroll", updateScrollSpy, { passive: true });
+        updateScrollSpy();
       });
     </script>
   </body>

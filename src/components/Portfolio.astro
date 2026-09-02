@@ -1,36 +1,55 @@
 ---
+import regAdjudicatorImg from '../assets/regAdjudicator-image.jpg';
+import goMedImg from '../assets/goMed-image.jpg';
+import asyncServerImg from '../assets/async-web-server.jpg';
+import titles101Img from '../assets/101-titles.jpg';
+import githubIcon from '../assets/github-icon.svg';
+import greenDot from '../assets/green-dot.png';
+
 const projects = [
   {
     id: 1,
-    title: "Sample Project #1",
-    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-    image: "https://placeimg.com/768/456/arch/grayscale",
+    title: "regAdjudicator",
+    description: "A reference implementation of an agentic RAG system that detects and explains conflicts between US (FDA) and EU (EMA) drug regulations, considering trial design requirements, approval pathways, patient population restrictions, and grounds every claim in a citation back to the source document.",
+    image: regAdjudicatorImg.src,
+    motivation: "I built RegAdjudicator as a sandbox to explore the realities of agentic AI. I wanted to move beyond basic RAG tutorials to see how multi-step reasoning, dynamic tool interactions, and self-correction actually function. I chose to aim this architecture at FDA and EMA regulatory divergence because it's a high-stakes problem that compliance teams wrestle with daily. It was the perfect opportunity to learn how agents handle conflicting truths while building an architecture that points toward a tangible, real-world solution.",
+    github: "https://github.com/rarescazan30/regAdjudicator",
+    demo: "",
   },
   {
     id: 2,
-    title: "Sample Project #2",
-    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-    image: "https://placeimg.com/768/456/nature/grayscale",
+    title: "goMed",
+    description: "Modern educational tool for schools. goMed gamifies first-aid and CPR training through a web-based application. The platform utilizes Google’s MediaPipe Pose detection to analyze and correct a user's CPR compression posture and depth in real-time, running entirely on the client’s device to eliminate network latency. Integrated WebXR and AR interactive models help players vizualize moves, alongside real-time multiplayer lobbies where educators can host classroom quiz challenges to test knowledge acquisition.",
+    image: goMedImg.src,
+    motivation: "Developed as part of a funded initiative to teach first aid in schools. goMed aims to teach impactful medical training. Our motivation was to combine the technical challenge of client-side computer vision with a genuine solution for student disengagement. Instead of a standard passive app, we built an architecture that forces active practice, analyzing a student's actual CPR cadence in real-time through the web browser. We managed to deliver a platform that is currently being used in schools across the country and provides students and teachers with an engaging and effective way to learn and practice first aid.",
+    github: "https://github.com/asemedu/goMed",
+    demo: "",
   },
   {
     id: 3,
-    title: "Sample Project #3",
-    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-    image: "https://placeimg.com/768/456/people/grayscale",
+    title: "Async Web Server",
+    description: "A high-performance, single-threaded HTTP server written in C, built around an event-driven architecture instead of the traditional thread-per-connection model. The server uses Linux's epoll API for I/O multiplexing, handling many concurrent client connections on a single thread without blocking. Connection lifecycles are managed through an internal state machine that transitions cleanly between receiving data, parsing HTTP headers, reading files, and transmitting responses. Static file transfers use sendfile for zero-copy delivery straight from disk to socket buffer, minimizing CPU context switches. Request parsing is handled through a dedicated HTTP parser, keeping the server robust against malformed or adversarial input.",
+    image: asyncServerImg.src,
+    motivation: "This started as a systems programming assignment, but the brief only asked for a working non-blocking server, it didn't require zero-copy transfer or a formal state machine for connection handling. I added both because I wanted to understand why real servers (like nginx) are built this way, not just make something that passed the tests. Working through epoll's edge cases and getting sendfile to behave correctly across different connection states forced me to actually reason about kernel-level I/O instead of treating sockets as a black box. It turned an assignment about basic networking into a real lesson in how production infrastructure gets fast.",
+    github: "https://github.com/rarescazan30/Async-Web-Server",
+    demo: "",
   },
   {
     id: 4,
-    title: "Sample Project #4",
-    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-    image: "https://placeimg.com/768/456/tech/grayscale",
-  },
-  {
-    id: 5,
-    title: "Sample Project #5",
-    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-    image: "https://placeimg.com/768/456/animals/grayscale",
+    title: "101 Titles That Made us Humans",
+    description: "An elegant, interactive digital gallery showcasing '101 Titles That Made Us Humans', a curated collection of foundational literature. Designed with a minimal aesthetic, users can browse the entire catalog through a grid-based interface. An integrated search dialog makes finding specific authors or titles instantaneous.",
+    image: titles101Img.src,
+    motivation: "The inspiration for this project was a deeply personal presentation I had the privilege to attend. We were given a list, '101 Titles That Made Us Humans', personally presented by the Romanian philosopher Gabriel Liiceanu. The literary circle I am a part of, 'Cenaclul Pagini și Cerneală', was invited to meet Gabriel Liiceanu in Eugen Lovinescu's Memorial House. A discourse of over 3 hours followed, during which I came in contact with various philosophical and literary ideas which deeply resonated with me. Having had the chance to personally meet such a cultural figure and hear him talk about the books that shaped humanity was an inspiring experience, one that made me want to share the collection with others, in a modern, accessible way.",
+    github: "https://github.com/rarescazan30/humanitas-101-titles-that-made-us-humans",
+    demo: "https://humanitas-101-titles-that-made-us-h-six.vercel.app",
   },
 ];
+
+function truncateWords(text: string, maxWords: number = 20): string {
+  const words = text.trim().split(/\s+/);
+  if (words.length <= maxWords) return text;
+  return words.slice(0, maxWords).join(" ") + "...";
+}
 ---
 
 <!-- PORTFOLIO -->
@@ -38,24 +57,138 @@ const projects = [
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
-        <h1>PORTFOLIO</h1>
-        <p class="lead">Below you'll find some of my recent work.</p>
+        <h1>portfolio:</h1>
+        <p class="lead">some of my recent work.</p>
       </div>
 
       {projects.map((project) => (
         <div class="col-sm-6 col-md-4">
-          <div class="thumbnail">
+          <div
+            class="thumbnail project-card"
+            data-id={project.id}
+            data-title={project.title}
+            data-description={project.description}
+            data-motivation={project.motivation}
+            data-github={project.github}
+            data-demo={project.demo}
+          >
             <img src={project.image} alt={project.title} />
             <div class="caption">
               <h4>{project.title}</h4>
-              <p>{project.description}</p>
+              <p>{truncateWords(project.description, 20)}</p>
             </div>
           </div>
         </div>
       ))}
     </div>
+
+    <!-- INLINE PROJECT DETAILS PANEL (APPEARS BELOW PROJECTS) -->
+    <div id="project-details-panel" class="project-details-panel" style="display: none;">
+      <div class="panel-header">
+        <h3 id="detail-title" class="detail-title"></h3>
+        <button type="button" id="detail-close-btn" class="detail-close-btn" aria-label="Close details">&times;</button>
+      </div>
+
+      <div class="panel-body">
+        <div class="detail-block">
+          <span class="detail-label">description:</span>
+          <p id="detail-description" class="detail-text"></p>
+        </div>
+
+        <div class="detail-block">
+          <span class="detail-label">motivation:</span>
+          <p id="detail-motivation" class="detail-text"></p>
+        </div>
+
+        <div class="detail-links">
+          <a id="detail-demo-link" href="#" target="_blank" class="detail-btn demo-btn">
+            <img src={greenDot.src} alt="Live indicator" width="10" height="10" class="btn-live-img" />
+            <span>live demo</span>
+          </a>
+          <a id="detail-github-link" href="#" target="_blank" class="detail-btn github-btn">
+            <img src={githubIcon.src} alt="GitHub icon" width="14" height="14" class="btn-github-img" />
+            <span>github / docs</span>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const panel = document.getElementById("project-details-panel");
+    const closeBtn = document.getElementById("detail-close-btn");
+    const titleEl = document.getElementById("detail-title");
+    const descEl = document.getElementById("detail-description");
+    const motivationEl = document.getElementById("detail-motivation");
+    const demoLink = document.getElementById("detail-demo-link");
+    const githubLink = document.getElementById("detail-github-link");
+    const cards = document.querySelectorAll(".project-card");
+
+    let currentSelectedId = null;
+
+    function showProjectDetails(card) {
+      const id = card.dataset.id;
+      const title = card.dataset.title || "";
+      const description = card.dataset.description || "";
+      const motivation = card.dataset.motivation || "";
+      const github = card.dataset.github || "";
+      const demo = card.dataset.demo || "";
+
+      // If clicking the currently open card, toggle it closed
+      if (currentSelectedId === id && panel.style.display !== "none") {
+        closeDetails();
+        return;
+      }
+
+      currentSelectedId = id;
+
+      // Update active card styling
+      cards.forEach((c) => c.classList.remove("active-card"));
+      card.classList.add("active-card");
+
+      // Fill content
+      titleEl.textContent = title;
+      descEl.textContent = description;
+      motivationEl.textContent = motivation;
+
+      // Demo link
+      if (demo) {
+        demoLink.href = demo;
+        demoLink.style.display = "inline-flex";
+      } else {
+        demoLink.style.display = "none";
+      }
+
+      // GitHub link
+      if (github) {
+        githubLink.href = github;
+        githubLink.style.display = "inline-flex";
+      } else {
+        githubLink.style.display = "none";
+      }
+
+      // Reveal panel
+      panel.style.display = "block";
+      panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function closeDetails() {
+      panel.style.display = "none";
+      currentSelectedId = null;
+      cards.forEach((c) => c.classList.remove("active-card"));
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener("click", () => showProjectDetails(card));
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeDetails);
+    }
+  });
+</script>
 
 <style>
   .thumbnail {
@@ -63,6 +196,27 @@ const projects = [
     overflow: hidden;
     cursor: pointer;
     background-color: #FAF8F5;
+    border: 1px solid #E8E5DF;
+    transition: all 0.25s ease;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .thumbnail img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+  }
+
+  .thumbnail .caption {
+    padding: 12px 14px;
+    flex-grow: 1;
+  }
+
+  .thumbnail.active-card {
+    border-color: #af6204;
+    box-shadow: 0 4px 15px rgba(175, 98, 4, 0.15);
   }
 
   .thumbnail * {
@@ -70,12 +224,24 @@ const projects = [
   }
 
   .thumbnail h4 {
-    font-size: 19px;
-    font-weight: 400;
+    font-size: 17px;
+    font-weight: 600;
+    text-transform: lowercase;
+    margin-top: 4px;
+    margin-bottom: 6px;
+    color: #222;
   }
 
   .thumbnail p {
-    line-height: 24px;
+    font-size: 13.5px;
+    line-height: 19px;
+    color: #666;
+    margin-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .thumbnail:hover h4,
@@ -91,14 +257,14 @@ const projects = [
     font-family: 'FontAwesome';
     content: '\f121';
     color: #FAF8F5;
-    font-size: 48px;
+    font-size: 44px;
     line-height: 80px;
     top: 70%;
     position: absolute;
     text-align: center;
     display: inline-block;
-    width: 86px;
-    height: 86px;
+    width: 80px;
+    height: 80px;
     margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -116,5 +282,147 @@ const projects = [
     color: #FAF8F5;
     background: #af6204;
     border: 3px solid #FAF8F5;
+  }
+
+  /*--- INLINE DETAILS PANEL ---*/
+  .project-details-panel {
+    margin-top: 35px;
+    padding: 32px 36px;
+    background: #FAF8F5;
+    border: 1px solid #E0DDD7;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    animation: panelFadeIn 0.3s ease-out;
+  }
+
+  @keyframes panelFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #EAE6DF;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+
+  .detail-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
+    text-transform: lowercase;
+  }
+
+  .detail-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    line-height: 1;
+    color: #888;
+    cursor: pointer;
+    padding: 2px 8px;
+    transition: color 0.2s ease;
+  }
+
+  .detail-close-btn:hover {
+    color: #111;
+  }
+
+  .detail-block {
+    margin-bottom: 16px;
+  }
+
+  #portfolio h1 {
+    color: #C46353;
+  }
+
+  .detail-label {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #C46353;
+    text-transform: lowercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    margin-bottom: 4px;
+    border-bottom: 1px solid rgba(196, 99, 83, 0.35);
+    padding-bottom: 1px;
+  }
+
+  .detail-text {
+    font-size: 15px;
+    line-height: 1.65em;
+    color: #444;
+    margin: 4px 0 0 0;
+  }
+
+  .detail-links {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #EAE6DF;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .detail-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background-color: #FAF8F5; /* Matches site background */
+    border: 1px solid #C46353; /* Muted orange accent border */
+    border-radius: 4px;
+    color: #222;
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 500;
+    text-transform: lowercase;
+    line-height: 1.2;
+    transition: all 0.2s ease;
+  }
+
+  .detail-btn:hover {
+    background-color: #FAF8F5;
+    color: #C46353;
+    text-decoration: none;
+    border-color: #C46353;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(196, 99, 83, 0.15);
+  }
+
+  .btn-github-img {
+    width: 13px !important;
+    height: 13px !important;
+    max-width: 13px !important;
+    max-height: 13px !important;
+    object-fit: contain;
+    display: inline-block;
+    flex-shrink: 0;
+    background: transparent !important;
+    mix-blend-mode: multiply;
+  }
+
+  .btn-live-img {
+    width: 9px !important;
+    height: 9px !important;
+    max-width: 9px !important;
+    max-height: 9px !important;
+    object-fit: contain;
+    display: inline-block;
+    flex-shrink: 0;
+    background: transparent !important;
+    mix-blend-mode: multiply;
+    border-radius: 50%;
   }
 </style>
