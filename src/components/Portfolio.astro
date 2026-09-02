@@ -1,0 +1,120 @@
+---
+const projects = [
+  {
+    id: 1,
+    title: "Sample Project #1",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+    image: "https://placeimg.com/768/456/arch/grayscale",
+  },
+  {
+    id: 2,
+    title: "Sample Project #2",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+    image: "https://placeimg.com/768/456/nature/grayscale",
+  },
+  {
+    id: 3,
+    title: "Sample Project #3",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+    image: "https://placeimg.com/768/456/people/grayscale",
+  },
+  {
+    id: 4,
+    title: "Sample Project #4",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+    image: "https://placeimg.com/768/456/tech/grayscale",
+  },
+  {
+    id: 5,
+    title: "Sample Project #5",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+    image: "https://placeimg.com/768/456/animals/grayscale",
+  },
+];
+---
+
+<!-- PORTFOLIO -->
+<div id="portfolio" class="content-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>PORTFOLIO</h1>
+        <p class="lead">Below you'll find some of my recent work.</p>
+      </div>
+
+      {projects.map((project) => (
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail">
+            <img src={project.image} alt={project.title} />
+            <div class="caption">
+              <h4>{project.title}</h4>
+              <p>{project.description}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .thumbnail {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #FAF8F5;
+  }
+
+  .thumbnail * {
+    transition: all 0.25s;
+  }
+
+  .thumbnail h4 {
+    font-size: 19px;
+    font-weight: 400;
+  }
+
+  .thumbnail p {
+    line-height: 24px;
+  }
+
+  .thumbnail:hover h4,
+  .thumbnail:hover p {
+    color: #afafaf;
+  }
+
+  .thumbnail:hover img {
+    opacity: 0.25;
+  }
+
+  .thumbnail:after {
+    font-family: 'FontAwesome';
+    content: '\f121';
+    color: #FAF8F5;
+    font-size: 48px;
+    line-height: 80px;
+    top: 70%;
+    position: absolute;
+    text-align: center;
+    display: inline-block;
+    width: 86px;
+    height: 86px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    border-radius: 50%;
+    background: transparent;
+    border: 3px solid transparent;
+    transition: all 0.35s;
+    opacity: 0;
+  }
+
+  .thumbnail:hover:after {
+    top: 25%;
+    opacity: 1;
+    color: #FAF8F5;
+    background: #af6204;
+    border: 3px solid #FAF8F5;
+  }
+</style>

@@ -1,0 +1,127 @@
+---
+---
+
+<!-- NAVIGATION -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button
+        type="button"
+        class="navbar-toggle"
+        data-toggle="collapse"
+        data-target="#bs-example-navbar-collapse-1"
+      >
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand scroll" href="#home">rc.log</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#home" class="scroll selected">home</a></li>
+        <li><a href="#about" class="scroll">about</a></li>
+        <li><a href="#portfolio" class="scroll">portfolio</a></li>
+        <li><a href="#portfolio" class="scroll">blog</a></li>
+        <li><a href="#contact" class="scroll">contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .navbar-default {
+    font-family: 'Montserrat', sans-serif;
+    background: #FAF8F5;
+    border-bottom-color: #DFDFDF;
+    height: 60px;
+    margin-bottom: 0;
+  }
+
+  .navbar-header .navbar-toggle {
+    margin-top: 12px;
+  }
+
+  .navbar-header .navbar-brand {
+    letter-spacing: -0.02em;
+    height: 60px;
+    padding: 30px 10px 0 10px;
+    font-size: 32px;
+    line-height: 0px;
+    font-weight: 400;
+    color: #333333;
+    white-space: nowrap;
+    text-transform: lowercase;
+  }
+
+  .navbar-default .navbar-brand:focus {
+    color: #333333;
+  }
+
+  .navbar-default .navbar-nav {
+    background: #FAF8F5;
+    margin-top: 0;
+  }
+
+  .navbar-default .navbar-nav > li > a {
+    color: #222;
+    padding: 10px;
+    border-bottom: 1px solid #DFDFDF;
+    font-weight: 400;
+    text-transform: lowercase;
+  }
+
+  .navbar-default .navbar-nav > li > a.selected {
+    color: #E64B36;
+  }
+
+  .navbar-default a.navbar-brand:hover .navbar-default .navbar-nav > li > a:hover {
+    background-color: #DFDFDF;
+  }
+
+  .navbar-default .navbar-brand:hover {
+    color: #E64B36;
+  }
+
+  @media screen and (min-width: 768px) {
+    .navbar-default {
+      height: 100px;
+    }
+
+    .navbar-header {
+      width: 100%;
+    }
+
+    .navbar-header .navbar-brand {
+      height: 70px;
+      padding: 40px 0 0 15px;
+      font-size: 38px;
+    }
+
+    .navbar-default .navbar-nav > li > a {
+      padding: 0px 20px 9px 0;
+    }
+
+    .navbar-default .navbar-nav > li > a:hover {
+      background-color: transparent;
+      color: #E64B36;
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    .navbar-default {
+      height: 120px;
+    }
+
+    .navbar-header .navbar-brand {
+      height: 80px;
+      padding: 45px 0 0 15px;
+      font-size: 42px;
+    }
+
+    .navbar-default .navbar-nav > li > a {
+      padding: 10px 25px 9px 0;
+    }
+  }
+</style>
