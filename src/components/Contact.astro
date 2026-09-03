@@ -2,6 +2,7 @@
 import resumeIcon from '../assets/resume.svg';
 import linkedinIcon from '../assets/linkedin.svg';
 import githubIcon from '../assets/github.svg';
+import resumePdf from '../assets/september-resume.pdf';
 ---
 
 <!-- CONTACT -->
@@ -15,12 +16,7 @@ import githubIcon from '../assets/github.svg';
         <div class="social-cont">
           <div class="row">
             <div class="col-sm-12">
-              <a
-                class="contact-btn resume-btn"
-                href="/src/assets/august-resume.pdf"
-                role="button"
-                target="_blank"
-              >
+              <a class="contact-btn resume-btn" href={resumePdf} target="_blank">
                 <div class="icon-square">
                   <img src={resumeIcon.src} alt="Resume" class="icon-img" />
                 </div>
