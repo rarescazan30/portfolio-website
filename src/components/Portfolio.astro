@@ -10,7 +10,7 @@ const projects = [
   {
     id: 1,
     title: "regAdjudicator",
-    description: "A reference implementation of an agentic RAG system that detects and explains conflicts between US (FDA) and EU (EMA) drug regulations, considering trial design requirements, approval pathways, patient population restrictions, and grounds every claim in a citation back to the source document.",
+    description: "Reference implementation of an agentic RAG system that detects and explains conflicts between US (FDA) and EU (EMA) drug regulations, considering trial design requirements, approval pathways, patient population restrictions, and grounds every claim in a citation back to the source document.",
     image: regAdjudicatorImg.src,
     motivation: "I built RegAdjudicator as a sandbox to explore the realities of agentic AI. I wanted to move beyond basic RAG tutorials to see how multi-step reasoning, dynamic tool interactions, and self-correction actually function. I chose to aim this architecture at FDA and EMA regulatory divergence because it's a high-stakes problem that compliance teams wrestle with daily. It was the perfect opportunity to learn how agents handle conflicting truths while building an architecture that points toward a tangible, real-world solution.",
     github: "https://github.com/rarescazan30/regAdjudicator",
@@ -28,7 +28,7 @@ const projects = [
   {
     id: 3,
     title: "Async Web Server",
-    description: "A high-performance, single-threaded HTTP server written in C, built around an event-driven architecture instead of the traditional thread-per-connection model. The server uses Linux's epoll API for I/O multiplexing, handling many concurrent client connections on a single thread without blocking. Connection lifecycles are managed through an internal state machine that transitions cleanly between receiving data, parsing HTTP headers, reading files, and transmitting responses. Static file transfers use sendfile for zero-copy delivery straight from disk to socket buffer, minimizing CPU context switches. Request parsing is handled through a dedicated HTTP parser, keeping the server robust against malformed or adversarial input.",
+    description: "High-performance, single-threaded HTTP server written in C, built around an event-driven architecture instead of the traditional thread-per-connection model. The server uses Linux's epoll API for I/O multiplexing, handling many concurrent client connections on a single thread without blocking. Connection lifecycles are managed through an internal state machine that transitions cleanly between receiving data, parsing HTTP headers, reading files, and transmitting responses. Static file transfers use sendfile for zero-copy delivery straight from disk to socket buffer, minimizing CPU context switches. Request parsing is handled through a dedicated HTTP parser, keeping the server robust against malformed or adversarial input.",
     image: asyncServerImg.src,
     motivation: "This started as a systems programming assignment, but the brief only asked for a working non-blocking server, it didn't require zero-copy transfer or a formal state machine for connection handling. I added both because I wanted to understand why real servers (like nginx) are built this way, not just make something that passed the tests. Working through epoll's edge cases and getting sendfile to behave correctly across different connection states forced me to actually reason about kernel-level I/O instead of treating sockets as a black box. It turned an assignment about basic networking into a real lesson in how production infrastructure gets fast.",
     github: "https://github.com/rarescazan30/Async-Web-Server",
@@ -37,7 +37,7 @@ const projects = [
   {
     id: 4,
     title: "101 Titles That Made us Humans",
-    description: "An elegant, interactive digital gallery showcasing '101 Titles That Made Us Humans', a curated collection of foundational literature. Designed with a minimal aesthetic, users can browse the entire catalog through a grid-based interface. An integrated search dialog makes finding specific authors or titles instantaneous.",
+    description: "Interactive digital gallery showcasing '101 Titles That Made Us Humans', a curated collection of foundational literature. Designed with a minimal aesthetic, users can browse the entire catalog through a grid-based interface. An integrated search dialog makes finding specific authors or titles instantaneous.",
     image: titles101Img.src,
     motivation: "The inspiration for this project was a deeply personal presentation I had the privilege to attend. We were given a list, '101 Titles That Made Us Humans', personally presented by the Romanian philosopher Gabriel Liiceanu. The literary circle I am a part of, 'Cenaclul Pagini și Cerneală', was invited to meet Gabriel Liiceanu in Eugen Lovinescu's Memorial House. A discourse of over 3 hours followed, during which I came in contact with various philosophical and literary ideas which deeply resonated with me. Having had the chance to personally meet such a cultural figure and hear him talk about the books that shaped humanity was an inspiring experience, one that made me want to share the collection with others, in a modern, accessible way.",
     github: "https://github.com/rarescazan30/humanitas-101-titles-that-made-us-humans",
@@ -56,59 +56,61 @@ function truncateWords(text: string, maxWords: number = 20): string {
 <div id="portfolio" class="content-section">
   <div class="container">
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-8 col-lg-7">
         <h1>portfolio:</h1>
         <p class="lead">some of my recent work.</p>
-      </div>
 
-      {projects.map((project) => (
-        <div class="col-sm-6 col-md-4">
-          <div
-            class="thumbnail project-card"
-            data-id={project.id}
-            data-title={project.title}
-            data-description={project.description}
-            data-motivation={project.motivation}
-            data-github={project.github}
-            data-demo={project.demo}
-          >
-            <img src={project.image} alt={project.title} />
-            <div class="caption">
-              <h4>{project.title}</h4>
-              <p>{truncateWords(project.description, 20)}</p>
+        <div class="row">
+          {projects.map((project) => (
+            <div class="col-xs-12 col-sm-6">
+              <div
+                class="thumbnail project-card"
+                data-id={project.id}
+                data-title={project.title}
+                data-description={project.description}
+                data-motivation={project.motivation}
+                data-github={project.github}
+                data-demo={project.demo}
+              >
+                <img src={project.image} alt={project.title} />
+                <div class="caption">
+                  <h4>{project.title}</h4>
+                  <p>{truncateWords(project.description, 20)}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- INLINE PROJECT DETAILS PANEL (APPEARS BELOW PROJECTS) -->
+        <div id="project-details-panel" class="project-details-panel" style="display: none;">
+          <div class="panel-header">
+            <h3 id="detail-title" class="detail-title"></h3>
+            <button type="button" id="detail-close-btn" class="detail-close-btn" aria-label="Close details">&times;</button>
+          </div>
+
+          <div class="panel-body">
+            <div class="detail-block">
+              <span class="detail-label">description:</span>
+              <p id="detail-description" class="detail-text"></p>
+            </div>
+
+            <div class="detail-block">
+              <span class="detail-label">motivation:</span>
+              <p id="detail-motivation" class="detail-text"></p>
+            </div>
+
+            <div class="detail-links">
+              <a id="detail-demo-link" href="#" target="_blank" class="detail-btn demo-btn">
+                <img src={greenDot.src} alt="Live indicator" width="10" height="10" class="btn-live-img" />
+                <span>live demo</span>
+              </a>
+              <a id="detail-github-link" href="#" target="_blank" class="detail-btn github-btn">
+                <img src={githubIcon.src} alt="GitHub icon" width="14" height="14" class="btn-github-img" />
+                <span>github / docs</span>
+              </a>
             </div>
           </div>
-        </div>
-      ))}
-    </div>
-
-    <!-- INLINE PROJECT DETAILS PANEL (APPEARS BELOW PROJECTS) -->
-    <div id="project-details-panel" class="project-details-panel" style="display: none;">
-      <div class="panel-header">
-        <h3 id="detail-title" class="detail-title"></h3>
-        <button type="button" id="detail-close-btn" class="detail-close-btn" aria-label="Close details">&times;</button>
-      </div>
-
-      <div class="panel-body">
-        <div class="detail-block">
-          <span class="detail-label">description:</span>
-          <p id="detail-description" class="detail-text"></p>
-        </div>
-
-        <div class="detail-block">
-          <span class="detail-label">motivation:</span>
-          <p id="detail-motivation" class="detail-text"></p>
-        </div>
-
-        <div class="detail-links">
-          <a id="detail-demo-link" href="#" target="_blank" class="detail-btn demo-btn">
-            <img src={greenDot.src} alt="Live indicator" width="10" height="10" class="btn-live-img" />
-            <span>live demo</span>
-          </a>
-          <a id="detail-github-link" href="#" target="_blank" class="detail-btn github-btn">
-            <img src={githubIcon.src} alt="GitHub icon" width="14" height="14" class="btn-github-img" />
-            <span>github / docs</span>
-          </a>
         </div>
       </div>
     </div>
@@ -116,8 +118,10 @@ function truncateWords(text: string, maxWords: number = 20): string {
 </div>
 
 <script is:inline>
-  document.addEventListener("DOMContentLoaded", () => {
+  function initPortfolio() {
     const panel = document.getElementById("project-details-panel");
+    if (!panel) return; // Only run if we are on the homepage where the portfolio exists
+
     const closeBtn = document.getElementById("detail-close-btn");
     const titleEl = document.getElementById("detail-title");
     const descEl = document.getElementById("detail-description");
@@ -171,7 +175,15 @@ function truncateWords(text: string, maxWords: number = 20): string {
 
       // Reveal panel
       panel.style.display = "block";
-      panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      
+      // Scroll smoothly to the panel, accounting for the 60px fixed navbar + 20px padding
+      if (window.$) {
+        window.$("html, body").animate({ 
+          scrollTop: window.$(panel).offset().top - 150 
+        }, 400);
+      } else {
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
     function closeDetails() {
@@ -187,7 +199,9 @@ function truncateWords(text: string, maxWords: number = 20): string {
     if (closeBtn) {
       closeBtn.addEventListener("click", closeDetails);
     }
-  });
+  }
+
+  document.addEventListener("astro:page-load", initPortfolio);
 </script>
 
 <style>
@@ -215,7 +229,7 @@ function truncateWords(text: string, maxWords: number = 20): string {
   }
 
   .thumbnail.active-card {
-    border-color: #af6204;
+    border-color: #C46353;
     box-shadow: 0 4px 15px rgba(175, 98, 4, 0.15);
   }
 
@@ -226,7 +240,6 @@ function truncateWords(text: string, maxWords: number = 20): string {
   .thumbnail h4 {
     font-size: 17px;
     font-weight: 600;
-    text-transform: lowercase;
     margin-top: 4px;
     margin-bottom: 6px;
     color: #222;
@@ -250,38 +263,37 @@ function truncateWords(text: string, maxWords: number = 20): string {
   }
 
   .thumbnail:hover img {
-    opacity: 0.25;
+    opacity: 0.75;
   }
 
   .thumbnail:after {
-    font-family: 'FontAwesome';
-    content: '\f121';
-    color: #FAF8F5;
-    font-size: 44px;
-    line-height: 80px;
-    top: 70%;
+    content: '↓';
+    color: #C46353;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 44px;
+    bottom: 12px;
     position: absolute;
     text-align: center;
     display: inline-block;
-    width: 80px;
-    height: 80px;
+    width: 48px;
+    height: 48px;
     margin-left: auto;
     margin-right: auto;
     left: 0;
     right: 0;
     border-radius: 50%;
-    background: transparent;
-    border: 3px solid transparent;
-    transition: all 0.35s;
+    background: rgba(250, 248, 245, 0.9);
+    border: 2px solid #C46353;
+    box-shadow: 0 4px 15px rgba(196, 99, 83, 0.2);
+    transition: all 0.3s ease;
     opacity: 0;
+    z-index: 5;
   }
 
   .thumbnail:hover:after {
-    top: 25%;
+    bottom: 24px;
     opacity: 1;
-    color: #FAF8F5;
-    background: #af6204;
-    border: 3px solid #FAF8F5;
   }
 
   /*--- INLINE DETAILS PANEL ---*/
@@ -320,7 +332,6 @@ function truncateWords(text: string, maxWords: number = 20): string {
     font-weight: 600;
     color: #222;
     margin: 0;
-    text-transform: lowercase;
   }
 
   .detail-close-btn {
@@ -350,7 +361,6 @@ function truncateWords(text: string, maxWords: number = 20): string {
     font-size: 14.5px;
     font-weight: 600;
     color: #C46353;
-    text-transform: lowercase;
     letter-spacing: 0.5px;
     display: inline-block;
     margin-bottom: 4px;

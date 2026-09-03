@@ -1,4 +1,5 @@
 ---
+import catSvg from '../assets/cat.svg';
 ---
 
 <!-- NAVIGATION -->
@@ -16,15 +17,19 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand scroll" href="#home">rc.log</a>
+      <a class="navbar-brand" href="/">rc.log</a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#home" class="scroll selected">home</a></li>
-        <li><a href="#about" class="scroll">about</a></li>
-        <li><a href="#portfolio" class="scroll">portfolio</a></li>
-        <li><a href="#portfolio" class="scroll">blog</a></li>
-        <li><a href="#contact" class="scroll">contact</a></li>
+        <li><a href="/#home" class="scroll selected">home</a></li>
+        <li><a href="/#about" class="scroll">about</a></li>
+        <li><a href="/#portfolio" class="scroll">portfolio</a></li>
+        <li>
+          <a href="/blog">
+            blog <img src={catSvg.src} alt="cat" class="nav-cat-icon" />
+          </a>
+        </li>
+        <li><a href="/#contact" class="scroll">contact</a></li>
       </ul>
     </div>
   </div>
@@ -72,6 +77,16 @@
     text-transform: lowercase;
   }
 
+  .nav-cat-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    transform: translateY(-2.5px);
+    transition: transform 0.2s ease;
+  }
+
   .navbar-default .navbar-nav > li > a.selected {
     color: #C46353;
   }
@@ -106,6 +121,10 @@
     .navbar-default .navbar-nav > li > a:hover {
       background-color: transparent;
       color: #C46353;
+    }
+
+    .navbar-default .navbar-nav > li > a:hover .nav-cat-icon {
+      transform: translateY(-4px) scale(1.1);
     }
   }
 

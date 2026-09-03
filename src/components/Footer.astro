@@ -1,0 +1,57 @@
+---
+import catSvg from '../assets/cat.svg';
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="footer-text accent-footer-text">rares cazan's logs</p>
+    <p class="footer-text">
+      personal website
+      <img src={catSvg.src} alt="cat" class="cat-icon" />
+      updated 2026
+    </p>
+    <p class="footer-sub">built with astro & vanilla css</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding: 40px 0 40px 0;
+    margin-top: 20px;
+    border-top: 1px solid #EAE6DF;
+    background-color: #FAF8F5;
+  }
+
+  .footer-text {
+    font-size: 13px;
+    color: #777;
+    margin: 0 0 4px 0;
+    text-transform: lowercase;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+  }
+
+  .accent-footer-text {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #C46353;
+  }
+
+  .cat-icon {
+    width: 20px;
+    height: 20px;
+    margin: 0 6px;
+    display: inline-block;
+    object-fit: contain;
+    transform: translateY(-5px);
+  }
+
+  .footer-sub {
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+    text-transform: lowercase;
+    letter-spacing: 0.2px;
+  }
+</style>

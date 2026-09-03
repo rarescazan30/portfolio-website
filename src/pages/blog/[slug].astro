@@ -1,0 +1,193 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={`${entry.data.title} | Rares Cazan`}>
+  <Navbar />
+  
+  <div id="article-header" class="content-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-lg-7">
+          <a href="/blog" class="back-link">← back to blog</a>
+          <h1>{entry.data.title}</h1>
+          <p class="article-desc">{entry.data.description}</p>
+          <div class="article-meta">
+            <span class="article-date">
+              {entry.data.pubDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <article class="content-section article-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-lg-7">
+          <div class="prose">
+            <Content />
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <Footer />
+</Layout>
+
+<style>
+  #article-header {
+    text-align: left;
+    padding-top: 260px;
+  }
+
+  .back-link {
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: #9C9C9C;
+    margin-bottom: 20px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .back-link:hover {
+    color: #C46353;
+  }
+
+  #article-header h1 {
+    display: block;
+    font-size: 26px;
+    font-weight: 500;
+    color: #C46353;
+    line-height: 1.7em;
+    text-transform: none;
+    text-decoration: underline;
+    text-decoration-color: #CCC;
+    text-underline-offset: 12px;
+    text-decoration-thickness: 1px;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 16px;
+  }
+
+  /* Remove the global orange underline from Layout.astro */
+  #article-header h1:after {
+    display: none;
+  }
+
+  .article-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    line-height: 1.6em;
+    color: #333;
+    margin-bottom: 22px;
+    text-transform: none;
+  }
+
+  .article-meta {
+    margin-top: 15px;
+  }
+
+  .article-date {
+    font-size: 14px;
+    color: #C46353;
+    text-transform: lowercase;
+  }
+
+  .article-content {
+    padding-top: 0;
+    min-height: 50vh;
+  }
+
+  /* Basic prose styling for the markdown content */
+  .prose {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    line-height: 1.6em;
+    color: #333;
+  }
+  
+  .prose :global(h2) {
+    font-size: 26px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  
+  .prose :global(h3) {
+    font-size: 22px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  
+  .prose :global(p) {
+    margin-bottom: 22px;
+  }
+  
+  .prose :global(a) {
+    color: #C46353;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+  
+  .prose :global(a:hover) {
+    border-bottom: 1px solid #C46353;
+  }
+  
+  .prose :global(ul), .prose :global(ol) {
+    margin-bottom: 20px;
+    padding-left: 20px;
+  }
+  
+  .prose :global(li) {
+    margin-bottom: 10px;
+  }
+
+  .prose :global(strong) {
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  @media screen and (min-width: 768px) {
+    #article-header {
+      padding-top: 280px;
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    #article-header {
+      padding-top: 300px;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #article-header {
+      padding-top: 320px;
+    }
+  }
+</style>

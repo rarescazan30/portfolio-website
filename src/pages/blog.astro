@@ -1,0 +1,197 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+// Sort by date (newest first)
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout title="Blog | Rares Cazan">
+  <Navbar />
+  
+  <div id="blog-hero" class="content-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>rares cazan's blog</h1>
+          <h5>tech and philosophy</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="blog-list" class="content-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-lg-7">
+          <ul class="post-list">
+            {posts.map((post) => (
+              <li>
+                <a href={`/blog/${post.id}`}>
+                  <h4 class="post-title">{post.data.title}</h4>
+                  <p class="post-desc">{post.data.description}</p>
+                  <span class="post-date">
+                    {post.data.pubDate.toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+</Layout>
+
+<style>
+  #blog-hero {
+    text-shadow: 1px 1px 0 rgba(250, 248, 245, 0.5);
+    text-align: left;
+    padding-top: 260px;
+  }
+
+  #blog-hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 38px;
+    font-weight: 300;
+    color: #333333;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    line-height: 1.15em;
+    letter-spacing: -0.01em;
+    text-transform: lowercase;
+  }
+
+  #blog-hero h1:after {
+    border-bottom: 1px solid #AAA;
+  }
+
+  #blog-hero h5 {
+    font-size: 13px;
+    color: #555;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+    margin-top: 10px;
+  }
+
+  #blog-list {
+    padding-top: 0;
+    min-height: 60vh;
+  }
+
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .post-list li {
+    margin-bottom: 40px;
+    border-bottom: 1px solid #E0DDD7;
+    padding-bottom: 30px;
+  }
+  
+  .post-list li:last-child {
+    border-bottom: none;
+  }
+
+  .post-list a {
+    text-decoration: none;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+  
+  .post-list a:hover {
+    transform: translateX(5px);
+  }
+
+  .post-title {
+    font-size: 26px;
+    font-weight: 500;
+    color: #C46353;
+    line-height: 1.7em;
+    text-transform: none;
+    text-decoration: underline;
+    text-decoration-color: #CCC;
+    text-underline-offset: 12px;
+    text-decoration-thickness: 1px;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 16px;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+
+  }
+  
+  .post-list a:hover .post-title {
+    color: #a34e40; /* Slightly darker on hover */
+  }
+
+  .post-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    line-height: 1.6em;
+    color: #333;
+    margin-bottom: 22px;
+    text-transform: none;
+  }
+
+  .post-date {
+    font-size: 13px;
+    color: #9C9C9C;
+    text-transform: lowercase;
+  }
+
+  @media screen and (min-width: 768px) {
+    #blog-hero {
+      padding-top: 280px;
+    }
+
+    #blog-hero h1 {
+      font-size: 48px;
+    }
+
+    #blog-hero h5 {
+      font-size: 14px;
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    #blog-hero {
+      padding-top: 300px;
+    }
+
+    #blog-hero h1 {
+      font-size: 54px;
+    }
+
+    #blog-hero h5 {
+      font-size: 15px;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #blog-hero {
+      padding-top: 320px;
+    }
+
+    #blog-hero h1 {
+      font-size: 58px;
+    }
+
+    #blog-hero h5 {
+      font-size: 16px;
+    }
+  }
+</style>
