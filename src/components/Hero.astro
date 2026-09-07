@@ -72,12 +72,19 @@
     font-size: 38px;
     font-weight: 300;
     color: #333333;
-    display: inline-block;
+    display: block;
+    width: fit-content;
     margin: 0;
     padding: 0;
     line-height: 1.15em;
     letter-spacing: -0.01em;
     text-transform: lowercase;
+    transition: transform 0.25s ease;
+    cursor: default;
+  }
+
+  #home h1:hover {
+    transform: translateY(-2.5px);
   }
 
   #home h1:after {
@@ -91,7 +98,16 @@
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: lowercase;
+    margin: 0;
     margin-top: 10px;
+    transition: transform 0.25s ease;
+    cursor: default;
+    display: block;
+    width: fit-content;
+  }
+
+  #home h5:hover {
+    transform: translateY(-1.5px);
   }
 
   @media screen and (min-width: 768px) {

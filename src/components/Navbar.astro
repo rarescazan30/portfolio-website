@@ -58,10 +58,17 @@ import catSvg from '../assets/cat.svg';
     color: #333333;
     white-space: nowrap;
     text-transform: lowercase;
+    transition: transform 0.25s ease, color 0.25s ease;
+    display: inline-block;
   }
 
   .navbar-default .navbar-brand:focus {
     color: #333333;
+  }
+
+  .navbar-default .navbar-brand:hover {
+    color: #C46353;
+    transform: translateY(-2px);
   }
 
   .navbar-default .navbar-nav {

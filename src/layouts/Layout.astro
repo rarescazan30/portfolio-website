@@ -160,6 +160,12 @@ const { title = "Rares Cazan" } = Astro.props;
     display: inline-block;
     margin-top: 20px;
     margin-bottom: 10px;
+    transition: transform 0.25s ease;
+    cursor: default;
+  }
+
+  .content-section h1:hover {
+    transform: translateY(-2.5px);
   }
 
   .content-section h1:after {

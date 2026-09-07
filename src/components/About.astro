@@ -1,8 +1,33 @@
 ---
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const latestPosts = posts.slice(0, 3);
 ---
 
 <!-- ABOUT -->
 <div id="about" class="content-section">
+  <div class="now-sidecar">
+    <h4>now:</h4>
+    <span class="now-timestamp">updated september 2026</span>
+    <p><span class="category-title">building:</span> real-time comp vision analysis & agentic RAG for regulatory auditing.</p>
+    <p><span class="category-title">reading:</span> "man and his symbols" — carl jung.</p>
+    <p><span class="category-title">researching:</span> epistemic trust in systems; how to engineer AI architectures that can evaluate conflicting truths.</p>
+
+    {latestPosts.length > 0 && (
+      <div class="writings-sidecar-block">
+        <h4>latest writings:</h4>
+        {latestPosts.map((post) => (
+          <p>
+            <a href={`/blog/${post.id}`} class="writing-link">
+              <span class="category-title">{post.data.title.toLowerCase()}</span>
+            </a>
+          </p>
+        ))}
+      </div>
+    )}
+  </div>
   <div class="container">
     <div class="row">
       <div class="col-sm-8 col-lg-7">
@@ -52,12 +77,120 @@
 </div>
 
 <style>
+  #about {
+    position: relative;
+  }
+
+  .now-sidecar {
+    font-family: 'Montserrat', sans-serif;
+    position: absolute;
+    top: 350px;
+    right: 55px;
+    width: 350px;
+    z-index: 10;
+  }
+
+  .now-sidecar h4 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #C46353;
+    text-transform: lowercase;
+    margin-top: 0;
+    margin-bottom: 6px;
+    display: inline-block;
+    transition: transform 0.25s ease;
+    cursor: default;
+  }
+
+  .now-sidecar h4:hover {
+    transform: translateY(-2px);
+  }
+
+  .now-sidecar h4:after {
+    content: '';
+    display: block;
+    border-bottom: 1px solid #DFDFDF;
+    padding-top: 3px;
+  }
+
+  .now-timestamp {
+    font-size: 11.5px;
+    color: #888;
+    text-transform: lowercase;
+    display: block;
+    margin-top: 6px;
+    margin-bottom: 12px;
+  }
+
+  .now-sidecar p {
+    font-size: 14.5px;
+    line-height: 1.65em;
+    color: #444;
+    margin-bottom: 10px;
+  }
+
+  .now-sidecar .category-title {
+    color: #C46353;
+    font-weight: 500;
+    display: inline;
+  }
+
+  .writings-sidecar-block {
+    margin-top: 100px;
+  }
+
+  .writings-sidecar-block p:first-of-type {
+    margin-top: 10px;
+  }
+
+  .writing-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .writing-link:hover {
+    transform: translateX(3px);
+  }
+
+  .writing-link .category-title {
+    color: #333;
+    transition: color 0.2s ease;
+  }
+
+  .writing-link:hover .category-title {
+    color: #C46353;
+  }
+
+  @media screen and (max-width: 1199px) {
+    .now-sidecar {
+      right: 20px;
+      width: 250px;
+    }
+  }
+
+  @media screen and (max-width: 991px) {
+    .now-sidecar {
+      position: static;
+      width: 100%;
+      padding: 0 15px;
+      margin-top: 30px;
+    }
+  }
+
   #about h1 {
     font-size: 26px;
     font-weight: 500;
     color: #C46353;
     margin-top: 10px;
     margin-bottom: 12px;
+    transition: transform 0.25s ease;
+    cursor: default;
+  }
+
+  #about h1:hover {
+    transform: translateY(-2.5px);
   }
 
   #about p.lead {
@@ -78,6 +211,13 @@
     text-transform: lowercase;
     letter-spacing: 0.5px;
     margin-bottom: 10px;
+    display: inline-block;
+    transition: transform 0.25s ease;
+    cursor: default;
+  }
+
+  .about-block h4:hover {
+    transform: translateY(-2px);
   }
 
   .about-block p {

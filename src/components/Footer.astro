@@ -30,12 +30,20 @@ import catSvg from '../assets/cat.svg';
     letter-spacing: 0.3px;
     display: flex;
     align-items: center;
+    width: fit-content;
   }
 
   .accent-footer-text {
     font-size: 16px;
     margin-bottom: 15px;
     color: #C46353;
+    display: inline-block;
+    transition: transform 0.25s ease;
+    cursor: default;
+  }
+
+  .accent-footer-text:hover {
+    transform: translateY(-2px);
   }
 
   .cat-icon {
@@ -45,6 +53,11 @@ import catSvg from '../assets/cat.svg';
     display: inline-block;
     object-fit: contain;
     transform: translateY(-5px);
+    transition: transform 0.2s ease;
+  }
+
+  .footer-text:hover .cat-icon {
+    transform: translateY(-6px) scale(1.15);
   }
 
   .footer-sub {
