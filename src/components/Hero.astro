@@ -8,6 +8,12 @@
       <div class="col-xs-12">
         <h1>rares cazan</h1>
         <h5>software engineer and builder</h5>
+        <div class="status-line">
+          <span class="green-dot"></span>
+          <span>available for 2027 internships</span>
+          <span class="dot"></span>
+          <span>bucharest, ro</span>
+        </div>
       </div>
     </div>
   </div>
@@ -18,6 +24,47 @@
     text-shadow: 1px 1px 0 rgba(250, 248, 245, 0.5);
     text-align: left;
     padding-top: 260px;
+  }
+
+  .status-line {
+    font-size: 11px;
+    color: #555;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    text-transform: lowercase;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .green-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #2e8b57;
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.65;
+      transform: scale(0.92);
+    }
+  }
+
+  .status-line .dot {
+    width: 6px;
+    height: 6px;
+    background-color: #C46353;
+    border-radius: 50%;
+    display: inline-block;
   }
 
   #home h1 {
@@ -59,6 +106,10 @@
     #home h5 {
       font-size: 14px;
     }
+
+    .status-line {
+      font-size: 12px;
+    }
   }
 
   @media screen and (min-width: 992px) {
@@ -73,6 +124,10 @@
     #home h5 {
       font-size: 15px;
     }
+
+    .status-line {
+      font-size: 13px;
+    }
   }
 
   @media screen and (min-width: 1200px) {
@@ -86,6 +141,10 @@
 
     #home h5 {
       font-size: 16px;
+    }
+
+    .status-line {
+      font-size: 14px;
     }
   }
 </style>
