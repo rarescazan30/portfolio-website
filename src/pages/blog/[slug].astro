@@ -34,6 +34,7 @@ const { Content } = await render(entry);
                 day: 'numeric',
               })}
             </span>
+            {entry.data.tag && <span class="article-tag">{entry.data.tag}</span>}
           </div>
         </div>
       </div>
@@ -107,12 +108,27 @@ const { Content } = await render(entry);
 
   .article-meta {
     margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .article-date {
-    font-size: 14px;
-    color: #C46353;
+    font-size: 13px;
+    color: #9C9C9C;
     text-transform: lowercase;
+  }
+
+  .article-tag {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #9C9C9C;
+    border: 1px solid #C46353;
+    border-radius: 2px;
+    padding: 2px 7px;
+    text-transform: lowercase;
+    line-height: 1.2;
+    display: inline-block;
   }
 
   .article-content {
@@ -129,11 +145,13 @@ const { Content } = await render(entry);
   }
   
   .prose :global(h2) {
-    font-size: 26px;
-    margin-top: 40px;
+    font-size: 24px;
+    font-weight: 500;
+    color: #C46353;
+    margin-top: 45px;
     margin-bottom: 20px;
-    font-weight: 700;
-    color: #1a1a1a;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #EAE6DF;
   }
   
   .prose :global(h3) {

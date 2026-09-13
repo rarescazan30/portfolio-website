@@ -19,11 +19,21 @@ const latestPosts = posts.slice(0, 3);
       <div class="writings-sidecar-block">
         <h4>latest writings:</h4>
         {latestPosts.map((post) => (
-          <p>
+          <div class="writing-item">
             <a href={`/blog/${post.id}`} class="writing-link">
-              <span class="category-title">{post.data.title.toLowerCase()}</span>
+              <span class="writing-title">{post.data.title.toLowerCase()}</span>
+              <div class="writing-meta">
+                <span class="writing-date">
+                  {post.data.pubDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </span>
+                {post.data.tag && <span class="writing-tag">{post.data.tag}</span>}
+              </div>
             </a>
-          </p>
+          </div>
         ))}
       </div>
     )}
@@ -139,14 +149,15 @@ const latestPosts = posts.slice(0, 3);
     margin-top: 100px;
   }
 
-  .writings-sidecar-block p:first-of-type {
-    margin-top: 10px;
+  .writing-item {
+    margin-top: 14px;
+    margin-bottom: 14px;
   }
 
   .writing-link {
     text-decoration: none;
     color: inherit;
-    display: inline-block;
+    display: block;
     transition: transform 0.2s ease;
   }
 
@@ -154,13 +165,42 @@ const latestPosts = posts.slice(0, 3);
     transform: translateX(3px);
   }
 
-  .writing-link .category-title {
+  .writing-title {
+    font-size: 14.5px;
+    font-weight: 500;
+    line-height: 1.45em;
     color: #333;
+    display: block;
     transition: color 0.2s ease;
   }
 
-  .writing-link:hover .category-title {
+  .writing-link:hover .writing-title {
     color: #C46353;
+  }
+
+  .writing-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
+
+  .writing-date {
+    font-size: 11.5px;
+    color: #9C9C9C;
+    text-transform: lowercase;
+  }
+
+  .writing-tag {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    color: #D98A7D;
+    border: 1px solid #D98A7D;
+    border-radius: 2px;
+    padding: 1px 5px;
+    text-transform: lowercase;
+    line-height: 1.2;
+    display: inline-block;
   }
 
   @media screen and (max-width: 1199px) {

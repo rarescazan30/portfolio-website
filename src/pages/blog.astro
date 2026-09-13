@@ -33,13 +33,16 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
                 <a href={`/blog/${post.id}`}>
                   <h4 class="post-title">{post.data.title}</h4>
                   <p class="post-desc">{post.data.description}</p>
-                  <span class="post-date">
-                    {post.data.pubDate.toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </span>
+                  <div class="post-meta">
+                    <span class="post-date">
+                      {post.data.pubDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </span>
+                    {post.data.tag && <span class="post-tag">{post.data.tag}</span>}
+                  </div>
                 </a>
               </li>
             ))}
@@ -147,10 +150,28 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
     text-transform: none;
   }
 
+  .post-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .post-date {
     font-size: 13px;
     color: #9C9C9C;
     text-transform: lowercase;
+  }
+
+  .post-tag {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #D98A7D;
+    border: 1px solid #D98A7D;
+    border-radius: 2px;
+    padding: 2px 7px;
+    text-transform: lowercase;
+    line-height: 1.2;
+    display: inline-block;
   }
 
   @media screen and (min-width: 768px) {
