@@ -191,6 +191,41 @@ const { Content } = await render(entry);
     color: #1a1a1a;
   }
 
+  .prose :global(em),
+  .prose :global(i) {
+    font-size: inherit;
+    font-style: italic;
+    font-weight: 500;
+    color: #222;
+  }
+
+  .prose :global(code) {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-size: 15px;
+    background-color: #EFECE6;
+    color: #444;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  .prose :global(pre) {
+    background-color: #F4F1EB;
+    border: 1px solid #E5E0D8;
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+
+  .prose :global(pre code) {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
   @media screen and (min-width: 768px) {
     #article-header {
       padding-top: 280px;
