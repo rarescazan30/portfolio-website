@@ -4,7 +4,6 @@ import goMedImg from '../assets/goMed-image.jpg';
 import asyncServerImg from '../assets/async-web-server.jpg';
 import titles101Img from '../assets/101-titles.jpg';
 import githubIcon from '../assets/github-icon.svg';
-import greenDot from '../assets/green-dot.png';
 
 const projects = [
   {
@@ -53,202 +52,202 @@ function truncateWords(text: string, maxWords: number = 20): string {
 ---
 
 <!-- PORTFOLIO -->
-<div id="portfolio" class="content-section">
+<section id="portfolio" class="content-section">
   <div class="container">
-    <div class="row">
-      <div class="col-sm-8 col-lg-7">
-        <h1>portfolio:</h1>
-        <p class="lead">some of my recent work.</p>
+    <div class="content-col">
+      <h1>portfolio:</h1>
+      <p class="lead">some of my recent work.</p>
 
-        <div class="row">
-          {projects.map((project) => (
-            <div class="col-xs-12 col-sm-6">
-              <div
-                class="thumbnail project-card"
-                data-id={project.id}
-                data-title={project.title}
-                data-description={project.description}
-                data-motivation={project.motivation}
-                data-github={project.github}
-                data-demo={project.demo}
-              >
-                <img src={project.image} alt={project.title} />
-                <div class="caption">
-                  <h4>{project.title}</h4>
-                  <p>{truncateWords(project.description, 20)}</p>
-                </div>
-              </div>
+      <div class="project-grid">
+        {projects.map((project) => (
+          <div
+            class="project-card"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="project-details-panel"
+            data-id={project.id}
+            data-title={project.title}
+            data-description={project.description}
+            data-motivation={project.motivation}
+            data-github={project.github}
+            data-demo={project.demo}
+          >
+            <img src={project.image} alt="" />
+            <div class="caption">
+              <h4>{project.title}</h4>
+              <p>{truncateWords(project.description, 20)}</p>
             </div>
-          ))}
+          </div>
+        ))}
+      </div>
+
+      <!-- INLINE PROJECT DETAILS PANEL (APPEARS BELOW PROJECTS) -->
+      <div id="project-details-panel" class="project-details-panel" hidden>
+        <div class="panel-header">
+          <h3 id="detail-title" class="detail-title"></h3>
+          <button type="button" id="detail-close-btn" class="detail-close-btn" aria-label="Close details">&times;</button>
         </div>
 
-        <!-- INLINE PROJECT DETAILS PANEL (APPEARS BELOW PROJECTS) -->
-        <div id="project-details-panel" class="project-details-panel" style="display: none;">
-          <div class="panel-header">
-            <h3 id="detail-title" class="detail-title"></h3>
-            <button type="button" id="detail-close-btn" class="detail-close-btn" aria-label="Close details">&times;</button>
+        <div class="panel-body">
+          <div class="detail-block">
+            <span class="detail-label">description:</span>
+            <p id="detail-description" class="detail-text"></p>
           </div>
 
-          <div class="panel-body">
-            <div class="detail-block">
-              <span class="detail-label">description:</span>
-              <p id="detail-description" class="detail-text"></p>
-            </div>
+          <div class="detail-block">
+            <span class="detail-label">motivation:</span>
+            <p id="detail-motivation" class="detail-text"></p>
+          </div>
 
-            <div class="detail-block">
-              <span class="detail-label">motivation:</span>
-              <p id="detail-motivation" class="detail-text"></p>
-            </div>
-
-            <div class="detail-links">
-              <a id="detail-demo-link" href="#" target="_blank" class="detail-btn demo-btn">
-                <img src={greenDot.src} alt="Live indicator" width="10" height="10" class="btn-live-img" />
-                <span>live demo</span>
-              </a>
-              <a id="detail-github-link" href="#" target="_blank" class="detail-btn github-btn">
-                <img src={githubIcon.src} alt="GitHub icon" width="14" height="14" class="btn-github-img" />
-                <span>github / docs</span>
-              </a>
-            </div>
+          <div class="detail-links">
+            <a id="detail-demo-link" href="#" target="_blank" class="detail-btn demo-btn">
+              <span class="live-dot"></span>
+              <span>live demo</span>
+            </a>
+            <a id="detail-github-link" href="#" target="_blank" class="detail-btn github-btn">
+              <img src={githubIcon.src} alt="" width="13" height="13" class="btn-github-img" />
+              <span>github / docs</span>
+            </a>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<script is:inline>
+<script>
   function initPortfolio() {
-    const panel = document.getElementById("project-details-panel");
-    if (!panel) return; // Only run if we are on the homepage where the portfolio exists
+    const panel = document.getElementById('project-details-panel');
+    if (!panel) return; // only on the homepage, where the portfolio exists
 
-    const closeBtn = document.getElementById("detail-close-btn");
-    const titleEl = document.getElementById("detail-title");
-    const descEl = document.getElementById("detail-description");
-    const motivationEl = document.getElementById("detail-motivation");
-    const demoLink = document.getElementById("detail-demo-link");
-    const githubLink = document.getElementById("detail-github-link");
-    const cards = document.querySelectorAll(".project-card");
+    const closeBtn = document.getElementById('detail-close-btn')!;
+    const titleEl = document.getElementById('detail-title')!;
+    const descEl = document.getElementById('detail-description')!;
+    const motivationEl = document.getElementById('detail-motivation')!;
+    const demoLink = document.getElementById('detail-demo-link') as HTMLAnchorElement;
+    const githubLink = document.getElementById('detail-github-link') as HTMLAnchorElement;
+    const cards = [...document.querySelectorAll<HTMLElement>('.project-card')];
 
-    let currentSelectedId = null;
+    let currentSelectedId: string | null = null;
 
-    function showProjectDetails(card) {
-      const id = card.dataset.id;
-      const title = card.dataset.title || "";
-      const description = card.dataset.description || "";
-      const motivation = card.dataset.motivation || "";
-      const github = card.dataset.github || "";
-      const demo = card.dataset.demo || "";
+    function setLink(link: HTMLAnchorElement, href: string) {
+      link.hidden = !href;
+      if (href) link.href = href;
+    }
 
-      // If clicking the currently open card, toggle it closed
-      if (currentSelectedId === id && panel.style.display !== "none") {
+    function showProjectDetails(card: HTMLElement) {
+      const { id = null, title = '', description = '', motivation = '', github = '', demo = '' } = card.dataset;
+
+      // Clicking the card that is already open toggles it closed
+      if (currentSelectedId === id && !panel!.hidden) {
         closeDetails();
         return;
       }
 
       currentSelectedId = id;
+      cards.forEach((c) => {
+        c.classList.toggle('active-card', c === card);
+        c.setAttribute('aria-expanded', String(c === card));
+      });
 
-      // Update active card styling
-      cards.forEach((c) => c.classList.remove("active-card"));
-      card.classList.add("active-card");
-
-      // Fill content
       titleEl.textContent = title;
       descEl.textContent = description;
       motivationEl.textContent = motivation;
+      setLink(demoLink, demo);
+      setLink(githubLink, github);
 
-      // Demo link
-      if (demo) {
-        demoLink.href = demo;
-        demoLink.style.display = "inline-flex";
-      } else {
-        demoLink.style.display = "none";
-      }
-
-      // GitHub link
-      if (github) {
-        githubLink.href = github;
-        githubLink.style.display = "inline-flex";
-      } else {
-        githubLink.style.display = "none";
-      }
-
-      // Reveal panel
-      panel.style.display = "block";
-      
-      // Scroll smoothly to the panel, accounting for the 60px fixed navbar + 20px padding
-      if (window.$) {
-        window.$("html, body").animate({ 
-          scrollTop: window.$(panel).offset().top - 150 
-        }, 400);
-      } else {
-        panel.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      panel!.hidden = false;
+      // `scroll-margin-top` on the panel keeps it clear of the fixed navbar
+      panel!.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function closeDetails() {
-      panel.style.display = "none";
+      panel!.hidden = true;
       currentSelectedId = null;
-      cards.forEach((c) => c.classList.remove("active-card"));
+      cards.forEach((c) => {
+        c.classList.remove('active-card');
+        c.setAttribute('aria-expanded', 'false');
+      });
     }
 
     cards.forEach((card) => {
-      card.addEventListener("click", () => showProjectDetails(card));
+      card.addEventListener('click', () => showProjectDetails(card));
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          showProjectDetails(card);
+        }
+      });
     });
 
-    if (closeBtn) {
-      closeBtn.addEventListener("click", closeDetails);
-    }
+    closeBtn.addEventListener('click', closeDetails);
   }
 
-  document.addEventListener("astro:page-load", initPortfolio);
+  document.addEventListener('astro:page-load', initPortfolio);
 </script>
 
 <style>
-  .thumbnail {
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px 30px;
+  }
+
+  @media (min-width: 768px) {
+    .project-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .project-card {
     position: relative;
+    padding: 4px;
+    border-radius: var(--radius);
+    line-height: 1.43;
     overflow: hidden;
     cursor: pointer;
-    background-color: #FAF8F5;
-    border: 1px solid #E8E5DF;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
     transition: all 0.25s ease;
     min-height: 320px;
     display: flex;
     flex-direction: column;
   }
 
-  .thumbnail img {
+  .project-card img {
+    display: block;
     width: 100%;
     height: 190px;
     object-fit: cover;
   }
 
-  .thumbnail .caption {
+  .project-card .caption {
     padding: 12px 14px;
     flex-grow: 1;
   }
 
-  .thumbnail.active-card {
-    border-color: #C46353;
-    box-shadow: 0 4px 15px rgba(175, 98, 4, 0.15);
+  .project-card.active-card {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-accent);
   }
 
-  .thumbnail * {
+  .project-card * {
     transition: all 0.25s;
   }
 
-  .thumbnail h4 {
+  .project-card h4 {
     font-size: 17px;
     font-weight: 600;
     margin-top: 4px;
     margin-bottom: 6px;
-    color: #222;
+    color: var(--color-text-strong);
   }
 
-  .thumbnail p {
+  .project-card p {
     font-size: 13.5px;
     line-height: 19px;
-    color: #666;
+    color: var(--color-text-muted);
     margin-bottom: 0;
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -257,18 +256,18 @@ function truncateWords(text: string, maxWords: number = 20): string {
     text-overflow: ellipsis;
   }
 
-  .thumbnail:hover h4,
-  .thumbnail:hover p {
-    color: #afafaf;
+  .project-card:hover h4,
+  .project-card:hover p {
+    color: var(--color-text-subtle);
   }
 
-  .thumbnail:hover img {
+  .project-card:hover img {
     opacity: 0.75;
   }
 
-  .thumbnail:after {
+  .project-card::after {
     content: '↓';
-    color: #C46353;
+    color: var(--color-accent);
     font-size: 24px;
     font-weight: 500;
     line-height: 44px;
@@ -283,25 +282,27 @@ function truncateWords(text: string, maxWords: number = 20): string {
     left: 0;
     right: 0;
     border-radius: 50%;
-    background: rgba(250, 248, 245, 0.9);
-    border: 2px solid #C46353;
-    box-shadow: 0 4px 15px rgba(196, 99, 83, 0.2);
+    background: color-mix(in srgb, var(--color-bg) 90%, transparent);
+    border: 2px solid var(--color-accent);
+    box-shadow: 0 4px 15px color-mix(in srgb, var(--color-accent) 20%, transparent);
     transition: all 0.3s ease;
     opacity: 0;
     z-index: 5;
   }
 
-  .thumbnail:hover:after {
+  .project-card:hover::after,
+  .project-card:focus-visible::after {
     bottom: 24px;
     opacity: 1;
   }
 
   /*--- INLINE DETAILS PANEL ---*/
   .project-details-panel {
+    scroll-margin-top: 150px;
     margin-top: 35px;
     padding: 32px 36px;
-    background: #FAF8F5;
-    border: 1px solid #E0DDD7;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
     border-radius: 6px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
     animation: panelFadeIn 0.3s ease-out;
@@ -322,7 +323,7 @@ function truncateWords(text: string, maxWords: number = 20): string {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #EAE6DF;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 12px;
     margin-bottom: 20px;
   }
@@ -330,7 +331,7 @@ function truncateWords(text: string, maxWords: number = 20): string {
   .detail-title {
     font-size: 22px;
     font-weight: 600;
-    color: #222;
+    color: var(--color-text-strong);
     margin: 0;
   }
 
@@ -339,14 +340,14 @@ function truncateWords(text: string, maxWords: number = 20): string {
     border: none;
     font-size: 26px;
     line-height: 1;
-    color: #888;
+    color: var(--color-text-subtle);
     cursor: pointer;
     padding: 2px 8px;
     transition: color 0.2s ease;
   }
 
   .detail-close-btn:hover {
-    color: #111;
+    color: var(--color-text-strong);
   }
 
   .detail-block {
@@ -354,31 +355,31 @@ function truncateWords(text: string, maxWords: number = 20): string {
   }
 
   #portfolio h1 {
-    color: #C46353;
+    color: var(--color-accent);
   }
 
   .detail-label {
     font-size: 14.5px;
     font-weight: 600;
-    color: #C46353;
+    color: var(--color-accent);
     letter-spacing: 0.5px;
     display: inline-block;
     margin-bottom: 4px;
-    border-bottom: 1px solid rgba(196, 99, 83, 0.35);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
     padding-bottom: 1px;
   }
 
   .detail-text {
     font-size: 15px;
     line-height: 1.65em;
-    color: #444;
+    color: var(--color-text-body);
     margin: 4px 0 0 0;
   }
 
   .detail-links {
     margin-top: 20px;
     padding-top: 16px;
-    border-top: 1px solid #EAE6DF;
+    border-top: 1px solid var(--color-border);
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -390,10 +391,10 @@ function truncateWords(text: string, maxWords: number = 20): string {
     align-items: center;
     gap: 6px;
     padding: 5px 12px;
-    background-color: #FAF8F5; /* Matches site background */
-    border: 1px solid #C46353; /* Muted orange accent border */
+    background-color: var(--color-bg); /* Matches site background */
+    border: 1px solid var(--color-accent); /* Muted orange accent border */
     border-radius: 4px;
-    color: #222;
+    color: var(--color-text-strong);
     text-decoration: none;
     font-size: 12.5px;
     font-weight: 500;
@@ -403,36 +404,31 @@ function truncateWords(text: string, maxWords: number = 20): string {
   }
 
   .detail-btn:hover {
-    background-color: #FAF8F5;
-    color: #C46353;
+    background-color: var(--color-bg);
+    color: var(--color-accent);
     text-decoration: none;
-    border-color: #C46353;
+    border-color: var(--color-accent);
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(196, 99, 83, 0.15);
+    box-shadow: 0 3px 8px color-mix(in srgb, var(--color-accent) 15%, transparent);
+  }
+
+  .detail-btn[hidden] {
+    display: none;
+  }
+
+  .live-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--color-live);
+    flex-shrink: 0;
   }
 
   .btn-github-img {
-    width: 13px !important;
-    height: 13px !important;
-    max-width: 13px !important;
-    max-height: 13px !important;
+    width: 13px;
+    height: 13px;
     object-fit: contain;
-    display: inline-block;
     flex-shrink: 0;
-    background: transparent !important;
     mix-blend-mode: multiply;
-  }
-
-  .btn-live-img {
-    width: 9px !important;
-    height: 9px !important;
-    max-width: 9px !important;
-    max-height: 9px !important;
-    object-fit: contain;
-    display: inline-block;
-    flex-shrink: 0;
-    background: transparent !important;
-    mix-blend-mode: multiply;
-    border-radius: 50%;
   }
 </style>

@@ -2,34 +2,29 @@
 ---
 
 <!-- HOME -->
-<div id="home" class="content-section">
+<section id="home" class="content-section">
   <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <h1>rares cazan</h1>
-        <h5>software engineer and builder</h5>
-        <div class="status-line">
-          <span class="green-dot"></span>
-          <span>available for 2027 internships</span>
-          <span class="dot"></span>
-          <span>bucharest, ro</span>
-        </div>
-      </div>
+    <h1>rares cazan</h1>
+    <h5>software engineer and builder</h5>
+    <div class="status-line">
+      <span class="green-dot"></span>
+      <span>available for 2027 internships</span>
+      <span class="dot"></span>
+      <span>bucharest, ro</span>
     </div>
   </div>
-</div>
+</section>
 
 <style>
   #home {
-    text-shadow: 1px 1px 0 rgba(250, 248, 245, 0.5);
+    text-shadow: 1px 1px 0 color-mix(in srgb, var(--color-bg) 50%, transparent);
     text-align: left;
     padding-top: 260px;
   }
 
   .status-line {
     font-size: 11px;
-    color: #555;
-    font-family: 'Montserrat', sans-serif;
+    color: var(--color-text-muted);
     font-weight: 500;
     letter-spacing: 0.4px;
     text-transform: lowercase;
@@ -42,7 +37,7 @@
   .green-dot {
     width: 6px;
     height: 6px;
-    background-color: #2e8b57;
+    background-color: var(--color-live);
     border-radius: 50%;
     display: inline-block;
     animation: pulse 3s ease-in-out infinite;
@@ -62,16 +57,15 @@
   .status-line .dot {
     width: 6px;
     height: 6px;
-    background-color: #C46353;
+    background-color: var(--color-accent);
     border-radius: 50%;
     display: inline-block;
   }
 
   #home h1 {
-    font-family: 'Montserrat', sans-serif;
     font-size: 38px;
     font-weight: 300;
-    color: #333333;
+    color: var(--color-text);
     display: block;
     width: fit-content;
     margin: 0;
@@ -88,13 +82,12 @@
   }
 
   #home h1:after {
-    border-bottom: 1px solid #AAA;
+    border-bottom: 1px solid var(--color-text-subtle);
   }
 
   #home h5 {
     font-size: 13px;
-    color: #555;
-    font-family: 'Montserrat', sans-serif;
+    color: var(--color-text-muted);
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: lowercase;

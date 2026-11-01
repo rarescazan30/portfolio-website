@@ -6,154 +6,113 @@ import resumePdf from '../assets/september-resume.pdf';
 ---
 
 <!-- CONTACT -->
-<div id="contact" class="content-section">
+<section id="contact" class="content-section">
   <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <h1>contact me.</h1>
-        <p class="lead">always open to collaborate!</p>
-        
-        <div class="social-cont">
-          <div class="row">
-            <div class="col-sm-12">
-              <a class="contact-btn resume-btn" href={resumePdf} target="_blank">
-                <div class="icon-square">
-                  <img src={resumeIcon.src} alt="Resume" class="icon-img" />
-                </div>
-                <span class="btn-text">resume</span>
-              </a>
+    <h1>contact me.</h1>
+    <p class="lead">always open to collaborate!</p>
 
-              <a
-                class="contact-btn github-btn"
-                href="https://github.com/rarescazan30"
-                role="button"
-                target="_blank"
-              >
-                <div class="icon-square">
-                  <img src={githubIcon.src} alt="GitHub" class="icon-img" />
-                </div>
-                <span class="btn-text">github</span>
-              </a>
+    <div class="social-cont">
+      <a class="contact-btn resume-btn" href={resumePdf} target="_blank">
+        <div class="icon-square">
+          <img src={resumeIcon.src} alt="" class="icon-img" />
+        </div>
+        <span class="btn-text">resume</span>
+      </a>
 
-              <a
-                class="contact-btn linkedin-btn"
-                href="https://www.linkedin.com/in/rares-cazan-121b8b389/"
-                role="button"
-                target="_blank"
-              >
-                <div class="icon-square">
-                  <img src={linkedinIcon.src} alt="LinkedIn" class="icon-img" />
-                </div>
-                <span class="btn-text">linkedin</span>
-              </a>
-            </div>
-          </div>
+      <a class="contact-btn github-btn" href="https://github.com/rarescazan30" target="_blank">
+        <div class="icon-square">
+          <img src={githubIcon.src} alt="" class="icon-img" />
+        </div>
+        <span class="btn-text">github</span>
+      </a>
+
+      <a class="contact-btn linkedin-btn" href="https://www.linkedin.com/in/rares-cazan-121b8b389/" target="_blank">
+        <div class="icon-square">
+          <img src={linkedinIcon.src} alt="" class="icon-img" />
+        </div>
+        <span class="btn-text">linkedin</span>
+      </a>
+    </div>
+
+    <!-- SEND ME A MESSAGE FORM -->
+    <div class="message-form-container">
+      <h4 class="form-heading">send me a message:</h4>
+
+      <form id="contact-form" class="minimal-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="23e658ec-cdc0-418b-a366-d482250a695d" />
+        <input type="hidden" name="subject" value="New Message from Portfolio Website" />
+
+        <div class="form-group">
+          <label for="name" class="sr-only">name</label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="alex" required />
         </div>
 
-        <!-- SEND ME A MESSAGE FORM -->
-        <div class="message-form-container">
-          <h4 class="form-heading">send me a message:</h4>
-          
-          <form id="contact-form" class="minimal-form" action="https://api.web3forms.com/submit" method="POST">
-            <input type="hidden" name="access_key" value="23e658ec-cdc0-418b-a366-d482250a695d" />
-            <input type="hidden" name="subject" value="New Message from Portfolio Website" />
-
-            <div class="form-group">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                class="form-input"
-                placeholder="alex"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="form-input"
-                placeholder="alex@example.com"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <textarea
-                id="message"
-                name="message"
-                class="form-textarea"
-                rows="4"
-                placeholder="hey rares, wanted to connect about..."
-                required
-              ></textarea>
-            </div>
-
-            <button type="submit" id="submit-btn" class="send-btn">
-              <span>send message</span>
-            </button>
-
-            <div id="form-status" class="form-status"></div>
-          </form>
+        <div class="form-group">
+          <label for="email" class="sr-only">email</label>
+          <input type="email" id="email" name="email" class="form-input" placeholder="alex@example.com" required />
         </div>
-      </div>
+
+        <div class="form-group">
+          <label for="message" class="sr-only">message</label>
+          <textarea
+            id="message"
+            name="message"
+            class="form-textarea"
+            rows="4"
+            placeholder="hey rares, wanted to connect about..."
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" id="submit-btn" class="send-btn">send message</button>
+
+        <div id="form-status" class="form-status" role="status"></div>
+      </form>
     </div>
   </div>
-</div>
+</section>
 
-<script is:inline>
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("contact-form");
-    const status = document.getElementById("form-status");
-    const submitBtn = document.getElementById("submit-btn");
+<script>
+  // `astro:page-load` (not DOMContentLoaded) so this also runs after
+  // client-side navigation, e.g. coming back to home from the blog.
+  document.addEventListener('astro:page-load', () => {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    if (!form) return;
 
-    if (form) {
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const accessKey = formData.get("access_key");
+    const status = document.getElementById('form-status')!;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
 
-        // If no API key configured yet, provide clean mailto fallback
-        if (accessKey === "YOUR_ACCESS_KEY_HERE") {
-          const name = formData.get("name");
-          const email = formData.get("email");
-          const message = formData.get("message");
-          const mailtoUrl = `mailto:rarescazan@gmail.com?subject=Message from ${encodeURIComponent(name)}&body=${encodeURIComponent(message + "\n\nFrom: " + name + " (" + email + ")")}`;
-          window.location.href = mailtoUrl;
-          status.textContent = "opening your email app...";
-          status.className = "form-status success";
-          return;
+    const showStatus = (text: string, kind: 'success' | 'error') => {
+      status.textContent = text;
+      status.className = `form-status ${kind}`;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'sending...';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          showStatus('message sent successfully! i will get back to you soon.', 'success');
+          form.reset();
+        } else {
+          showStatus(data.message || 'something went wrong. please try again.', 'error');
         }
-
-        submitBtn.disabled = true;
-        submitBtn.textContent = "sending...";
-
-        try {
-          const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: formData,
-          });
-
-          const data = await response.json();
-          if (data.success) {
-            status.textContent = "message sent successfully! i will get back to you soon.";
-            status.className = "form-status success";
-            form.reset();
-          } else {
-            status.textContent = data.message || "something went wrong. please try again.";
-            status.className = "form-status error";
-          }
-        } catch (error) {
-          status.textContent = "network error. please try again or email directly.";
-          status.className = "form-status error";
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "send message";
-        }
-      });
-    }
+      } catch {
+        showStatus('network error. please try again or email directly.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'send message';
+      }
+    });
   });
 </script>
 
@@ -161,7 +120,7 @@ import resumePdf from '../assets/september-resume.pdf';
   #contact h1 {
     font-size: 26px;
     font-weight: 500;
-    color: #C46353;
+    color: var(--color-accent);
     margin-top: 10px;
     margin-bottom: 12px;
   }
@@ -169,7 +128,7 @@ import resumePdf from '../assets/september-resume.pdf';
   #contact p.lead {
     font-size: 18px;
     line-height: 1.6em;
-    color: #333;
+    color: var(--color-text);
     margin-bottom: 24px;
   }
 
@@ -183,8 +142,8 @@ import resumePdf from '../assets/september-resume.pdf';
     align-items: center;
     height: 45px;
     width: 140px;
-    background-color: #FAF8F5;
-    border: 1px solid #D8D4CC;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border-strong);
     border-radius: 4px;
     margin: 0 10px 14px 0;
     position: relative;
@@ -223,7 +182,7 @@ import resumePdf from '../assets/september-resume.pdf';
     margin-left: 60px;
     font-size: 14.5px;
     font-weight: 500;
-    color: #222;
+    color: var(--color-text-strong);
     text-transform: lowercase;
     transition: color 0.3s ease;
   }
@@ -242,26 +201,26 @@ import resumePdf from '../assets/september-resume.pdf';
   }
 
   .resume-btn:after {
-    background-color: #C46353;
+    background-color: var(--color-accent);
   }
 
   .linkedin-btn:after {
-    background-color: #0077B5;
+    background-color: var(--color-linkedin);
   }
 
   .github-btn:after {
-    background-color: #24292E;
+    background-color: var(--color-github);
   }
 
   /* Hover States */
   .contact-btn:hover {
-    border-color: #BAAF9F;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-soft);
     transform: translateY(-1px);
   }
 
   .contact-btn:hover .btn-text {
-    color: #FAF8F5;
+    color: var(--color-on-accent);
   }
 
   .contact-btn:hover:after {
@@ -273,18 +232,18 @@ import resumePdf from '../assets/september-resume.pdf';
     max-width: 480px;
     margin-top: 10px;
     padding-top: 24px;
-    border-top: 1px solid #EAE6DF;
+    border-top: 1px solid var(--color-border);
   }
 
   .form-heading {
     font-size: 15px;
     font-weight: 600;
-    color: #C46353;
+    color: var(--color-accent);
     text-transform: lowercase;
     letter-spacing: 0.5px;
     margin-bottom: 18px;
     display: inline-block;
-    border-bottom: 1px solid rgba(196, 99, 83, 0.35);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
     padding-bottom: 2px;
   }
 
@@ -301,38 +260,29 @@ import resumePdf from '../assets/september-resume.pdf';
     margin-bottom: 0;
   }
 
-  .form-label {
-    font-size: 13.5px;
-    font-weight: 500;
-    color: #555;
-    text-transform: lowercase;
-    margin: 0;
-  }
-
   .form-input,
   .form-textarea {
     width: 100%;
     padding: 10px 14px;
-    background-color: #FAF8F5;
-    border: 1px solid #D8D4CC;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border-strong);
     border-radius: 4px;
     font-size: 14px;
-    color: #222;
-    font-family: 'Montserrat', sans-serif;
+    color: var(--color-text-strong);
     outline: none;
     transition: all 0.2s ease;
   }
 
   .form-input::placeholder,
   .form-textarea::placeholder {
-    color: #999;
+    color: var(--color-text-subtle);
     font-size: 13.5px;
   }
 
   .form-input:focus,
   .form-textarea:focus {
-    border-color: #C46353;
-    box-shadow: 0 0 0 3px rgba(196, 99, 83, 0.12);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 12%, transparent);
   }
 
   .form-textarea {
@@ -343,24 +293,23 @@ import resumePdf from '../assets/september-resume.pdf';
   .send-btn {
     align-self: flex-start;
     padding: 8px 22px;
-    background-color: #FAF8F5;
-    border: 1.5px solid #C46353;
+    background-color: var(--color-bg);
+    border: 1.5px solid var(--color-accent);
     border-radius: 4px;
-    color: #C46353;
+    color: var(--color-accent);
     font-size: 13.5px;
     font-weight: 600;
     text-transform: lowercase;
-    font-family: 'Montserrat', sans-serif;
     cursor: pointer;
     transition: all 0.2s ease;
     margin-top: 4px;
   }
 
   .send-btn:hover {
-    background-color: #C46353;
-    color: #FAF8F5;
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(196, 99, 83, 0.2);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-accent) 20%, transparent);
   }
 
   .form-status {
@@ -370,10 +319,10 @@ import resumePdf from '../assets/september-resume.pdf';
   }
 
   .form-status.success {
-    color: #5B8266;
+    color: var(--color-success);
   }
 
   .form-status.error {
-    color: #EF4444;
+    color: var(--color-error);
   }
 </style>

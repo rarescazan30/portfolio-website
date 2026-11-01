@@ -19,36 +19,30 @@ const { Content } = await render(entry);
 <Layout title={`${entry.data.title} | Rares Cazan`}>
   <Navbar />
   
-  <div id="article-header" class="content-section">
+  <header id="article-header" class="content-section">
     <div class="container">
-      <div class="row">
-        <div class="col-sm-8 col-lg-7">
-          <a href="/blog" class="back-link">← back to blog</a>
-          <h1>{entry.data.title}</h1>
-          <p class="article-desc">{entry.data.description}</p>
-          <div class="article-meta">
-            <span class="article-date">
-              {entry.data.pubDate.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </span>
-            {entry.data.tag && <span class="article-tag">{entry.data.tag}</span>}
-          </div>
+      <div class="content-col">
+        <a href="/blog" class="back-link">← back to blog</a>
+        <h1>{entry.data.title}</h1>
+        <p class="article-desc">{entry.data.description}</p>
+        <div class="article-meta">
+          <span class="article-date">
+            {entry.data.pubDate.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </span>
+          {entry.data.tag && <span class="article-tag">{entry.data.tag}</span>}
         </div>
       </div>
     </div>
-  </div>
+  </header>
 
   <article class="content-section article-content">
     <div class="container">
-      <div class="row">
-        <div class="col-sm-8 col-lg-7">
-          <div class="prose">
-            <Content />
-          </div>
-        </div>
+      <div class="content-col prose">
+        <Content />
       </div>
     </div>
   </article>
@@ -64,27 +58,26 @@ const { Content } = await render(entry);
 
   .back-link {
     display: inline-block;
-    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
-    color: #9C9C9C;
+    color: var(--color-text-subtle);
     margin-bottom: 20px;
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .back-link:hover {
-    color: #C46353;
+    color: var(--color-accent);
   }
 
   #article-header h1 {
     display: block;
     font-size: 26px;
     font-weight: 500;
-    color: #C46353;
+    color: var(--color-accent);
     line-height: 1.7em;
     text-transform: none;
     text-decoration: underline;
-    text-decoration-color: #CCC;
+    text-decoration-color: var(--color-border-strong);
     text-underline-offset: 12px;
     text-decoration-thickness: 1px;
     margin-top: 10px;
@@ -98,10 +91,9 @@ const { Content } = await render(entry);
   }
 
   .article-desc {
-    font-family: 'Montserrat', sans-serif;
     font-size: 18px;
     line-height: 1.6em;
-    color: #333;
+    color: var(--color-text);
     margin-bottom: 22px;
     text-transform: none;
   }
@@ -115,15 +107,14 @@ const { Content } = await render(entry);
 
   .article-date {
     font-size: 13px;
-    color: #9C9C9C;
+    color: var(--color-text-subtle);
     text-transform: lowercase;
   }
 
   .article-tag {
-    font-family: 'Montserrat', sans-serif;
     font-size: 13px;
-    color: #9C9C9C;
-    border: 1px solid #C46353;
+    color: var(--color-text-subtle);
+    border: 1px solid var(--color-accent);
     border-radius: 2px;
     padding: 2px 7px;
     text-transform: lowercase;
@@ -138,20 +129,19 @@ const { Content } = await render(entry);
 
   /* Basic prose styling for the markdown content */
   .prose {
-    font-family: 'Montserrat', sans-serif;
     font-size: 18px;
     line-height: 1.6em;
-    color: #333;
+    color: var(--color-text);
   }
   
   .prose :global(h2) {
     font-size: 24px;
     font-weight: 500;
-    color: #C46353;
+    color: var(--color-accent);
     margin-top: 45px;
     margin-bottom: 20px;
     padding-bottom: 8px;
-    border-bottom: 1px solid #EAE6DF;
+    border-bottom: 1px solid var(--color-border);
   }
   
   .prose :global(h3) {
@@ -159,7 +149,7 @@ const { Content } = await render(entry);
     margin-top: 30px;
     margin-bottom: 15px;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--color-text-strong);
   }
   
   .prose :global(p) {
@@ -167,14 +157,14 @@ const { Content } = await render(entry);
   }
   
   .prose :global(a) {
-    color: #C46353;
+    color: var(--color-accent);
     text-decoration: none;
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s ease;
   }
   
   .prose :global(a:hover) {
-    border-bottom: 1px solid #C46353;
+    border-bottom: 1px solid var(--color-accent);
   }
   
   .prose :global(ul), .prose :global(ol) {
@@ -188,7 +178,7 @@ const { Content } = await render(entry);
 
   .prose :global(strong) {
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--color-text-strong);
   }
 
   .prose :global(em),
@@ -196,25 +186,27 @@ const { Content } = await render(entry);
     font-size: inherit;
     font-style: italic;
     font-weight: 500;
-    color: #222;
+    color: var(--color-text-strong);
   }
 
   .prose :global(code) {
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-family: var(--font-mono);
     font-size: 15px;
-    background-color: #EFECE6;
-    color: #444;
+    background-color: var(--color-surface-strong);
+    color: var(--color-text-body);
     padding: 2px 6px;
     border-radius: 3px;
   }
 
   .prose :global(pre) {
-    background-color: #F4F1EB;
-    border: 1px solid #E5E0D8;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: 4px;
     padding: 16px 20px;
     margin: 24px 0;
     overflow-x: auto;
+    font-size: 14.5px;
+    line-height: 1.5;
   }
 
   .prose :global(pre code) {

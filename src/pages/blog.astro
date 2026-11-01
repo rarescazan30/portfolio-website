@@ -12,61 +12,54 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 <Layout title="Blog | Rares Cazan">
   <Navbar />
   
-  <div id="blog-hero" class="content-section">
+  <section id="blog-hero" class="content-section">
     <div class="container">
-      <div class="row">
-        <div class="col-xs-12">
-          <h1>rares cazan's blog</h1>
-          <h5>tech and philosophy</h5>
-        </div>
-      </div>
+      <h1>rares cazan's blog</h1>
+      <h5>tech and philosophy</h5>
     </div>
-  </div>
+  </section>
 
-  <div id="blog-list" class="content-section">
+  <section id="blog-list" class="content-section">
     <div class="container">
-      <div class="row">
-        <div class="col-sm-8 col-lg-7">
-          <ul class="post-list">
-            {posts.map((post) => (
-              <li>
-                <a href={`/blog/${post.id}`}>
-                  <h4 class="post-title">{post.data.title}</h4>
-                  <p class="post-desc">{post.data.description}</p>
-                  <div class="post-meta">
-                    <span class="post-date">
-                      {post.data.pubDate.toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </span>
-                    {post.data.tag && <span class="post-tag">{post.data.tag}</span>}
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div class="content-col">
+        <ul class="post-list">
+          {posts.map((post) => (
+            <li>
+              <a href={`/blog/${post.id}`}>
+                <h4 class="post-title">{post.data.title}</h4>
+                <p class="post-desc">{post.data.description}</p>
+                <div class="post-meta">
+                  <span class="post-date">
+                    {post.data.pubDate.toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
+                  {post.data.tag && <span class="tag">{post.data.tag}</span>}
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
-  </div>
+  </section>
 
   <Footer />
 </Layout>
 
 <style>
   #blog-hero {
-    text-shadow: 1px 1px 0 rgba(250, 248, 245, 0.5);
+    text-shadow: 1px 1px 0 color-mix(in srgb, var(--color-bg) 50%, transparent);
     text-align: left;
     padding-top: 260px;
   }
 
   #blog-hero h1 {
-    font-family: 'Montserrat', sans-serif;
     font-size: 38px;
     font-weight: 300;
-    color: #333333;
+    color: var(--color-text);
     display: inline-block;
     margin: 0;
     padding: 0;
@@ -76,13 +69,12 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
   }
 
   #blog-hero h1:after {
-    border-bottom: 1px solid #AAA;
+    border-bottom: 1px solid var(--color-text-subtle);
   }
 
   #blog-hero h5 {
     font-size: 13px;
-    color: #555;
-    font-family: 'Montserrat', sans-serif;
+    color: var(--color-text-muted);
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: lowercase;
@@ -102,7 +94,7 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   .post-list li {
     margin-bottom: 40px;
-    border-bottom: 1px solid #E0DDD7;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 30px;
   }
   
@@ -123,11 +115,11 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
   .post-title {
     font-size: 26px;
     font-weight: 500;
-    color: #C46353;
+    color: var(--color-accent);
     line-height: 1.7em;
     text-transform: none;
     text-decoration: underline;
-    text-decoration-color: #CCC;
+    text-decoration-color: var(--color-border-strong);
     text-underline-offset: 12px;
     text-decoration-thickness: 1px;
     margin-top: 10px;
@@ -138,14 +130,13 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
   }
   
   .post-list a:hover .post-title {
-    color: #a34e40; /* Slightly darker on hover */
+    color: var(--color-accent-hover); /* Slightly darker on hover */
   }
 
   .post-desc {
-    font-family: 'Montserrat', sans-serif;
     font-size: 18px;
     line-height: 1.6em;
-    color: #333;
+    color: var(--color-text);
     margin-bottom: 22px;
     text-transform: none;
   }
@@ -158,20 +149,8 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   .post-date {
     font-size: 13px;
-    color: #9C9C9C;
+    color: var(--color-text-subtle);
     text-transform: lowercase;
-  }
-
-  .post-tag {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
-    color: #D98A7D;
-    border: 1px solid #D98A7D;
-    border-radius: 2px;
-    padding: 2px 7px;
-    text-transform: lowercase;
-    line-height: 1.2;
-    display: inline-block;
   }
 
   @media screen and (min-width: 768px) {

@@ -1,87 +1,235 @@
 ---
 import catSvg from '../assets/cat.svg';
+
+const onBlog = Astro.url.pathname.startsWith('/blog');
 ---
 
 <!-- NAVIGATION -->
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button
-        type="button"
-        class="navbar-toggle"
-        data-toggle="collapse"
-        data-target="#bs-example-navbar-collapse-1"
-      >
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/">rc.log</a>
-    </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="/#home" class="scroll selected">home</a></li>
-        <li><a href="/#about" class="scroll">about</a></li>
-        <li><a href="/#portfolio" class="scroll">portfolio</a></li>
+<header class="site-nav">
+  <div class="container nav-inner">
+    <a class="nav-brand" href="/">rc.log</a>
+
+    <button
+      type="button"
+      class="nav-toggle"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+    >
+      <span class="sr-only">Toggle navigation</span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <nav id="nav-menu" class="nav-menu" aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="/#home" class:list={{ selected: !onBlog }}>home</a></li>
+        <li><a href="/#about">about</a></li>
+        <li><a href="/#portfolio">portfolio</a></li>
         <li>
-          <a href="/blog">
-            blog <img src={catSvg.src} alt="cat" class="nav-cat-icon" />
+          <a href="/blog" class:list={{ selected: onBlog }}>
+            blog <img src={catSvg.src} alt="" class="nav-cat-icon" />
           </a>
         </li>
-        <li><a href="/#contact" class="scroll">contact</a></li>
+        <li><a href="/#contact">contact</a></li>
       </ul>
-    </div>
+    </nav>
   </div>
-</nav>
+</header>
+
+<script>
+  import { navigate } from 'astro:transitions/client';
+
+  const prefersReducedMotion = () =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Smoothly scroll to the top and resolve once the scroll has finished.
+  function scrollToTop(): Promise<void> {
+    return new Promise((resolve) => {
+      if (window.scrollY === 0) return resolve();
+
+      const done = () => {
+        clearTimeout(fallback);
+        resolve();
+      };
+      // `scrollend` is the native "scroll finished" event; the timeout covers
+      // browsers that don't fire it.
+      const fallback = setTimeout(done, 1000);
+      window.addEventListener('scrollend', done, { once: true });
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    });
+  }
+
+  function initNav() {
+    const header = document.querySelector<HTMLElement>('.site-nav');
+    if (!header) return;
+
+    const toggle = header.querySelector<HTMLButtonElement>('.nav-toggle')!;
+    const links = [...header.querySelectorAll<HTMLAnchorElement>('.nav-links a')];
+
+    // Mobile menu
+    const setOpen = (open: boolean) => {
+      header.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+    toggle.addEventListener('click', () => setOpen(!header.classList.contains('is-open')));
+    links.forEach((link) => link.addEventListener('click', () => setOpen(false)));
+
+    // Scrollspy: highlight the link of the section crossing a line 200px
+    // below the top of the viewport. The observer's root is shrunk to that
+    // 1px line, so a section "intersects" exactly while it sits under it.
+    const sections = links
+      .map((link) => link.hash && document.querySelector<HTMLElement>(link.hash))
+      .filter((section): section is HTMLElement => !!section);
+
+    if (sections.length) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            links.forEach((link) =>
+              link.classList.toggle('selected', link.hash === `#${entry.target.id}`)
+            );
+          }
+        },
+        { rootMargin: `-200px 0px -${Math.max(0, window.innerHeight - 201)}px 0px` }
+      );
+      sections.forEach((section) => observer.observe(section));
+      document.addEventListener('astro:before-swap', () => observer.disconnect(), { once: true });
+    }
+
+    // Moving between home and blog while scrolled down: glide back to the top
+    // first, then let the view transition run.
+    const isOnHome = window.location.pathname === '/';
+    const crossPageLinks = [
+      header.querySelector<HTMLAnchorElement>('.nav-brand')!,
+      ...links,
+    ];
+
+    crossPageLinks.forEach((link) => {
+      link.addEventListener('click', async (event) => {
+        const href = link.getAttribute('href')!;
+        const goesToBlog = href === '/blog' && isOnHome;
+        const goesHome = (href === '/' || href === '/#home') && !isOnHome;
+        if (!(goesToBlog || goesHome) || window.scrollY === 0) return;
+
+        event.preventDefault();
+        await scrollToTop();
+        setTimeout(() => navigate(href), 300);
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initNav);
+</script>
 
 <style>
-  .navbar-default {
-    font-family: 'Montserrat', sans-serif;
-    background: #FAF8F5;
-    border-bottom-color: #DFDFDF;
-    height: 60px;
-    margin-bottom: 0;
+  .site-nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 1030;
+    height: var(--nav-height);
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .navbar-header .navbar-toggle {
-    margin-top: 12px;
+  .nav-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
   }
 
-  .navbar-header .navbar-brand {
-    letter-spacing: -0.02em;
+  .nav-brand {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
     height: 60px;
-    padding: 30px 10px 0 10px;
     font-size: 32px;
-    line-height: 0px;
     font-weight: 400;
-    color: #333333;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
     white-space: nowrap;
     text-transform: lowercase;
-    transition: transform 0.25s ease, color 0.25s ease;
-    display: inline-block;
+    transition: transform var(--ease), color var(--ease);
   }
 
-  .navbar-default .navbar-brand:focus {
-    color: #333333;
-  }
-
-  .navbar-default .navbar-brand:hover {
-    color: #C46353;
+  .nav-brand:hover,
+  .nav-brand:focus-visible {
+    color: var(--color-accent);
     transform: translateY(-2px);
   }
 
-  .navbar-default .navbar-nav {
-    background: #FAF8F5;
-    margin-top: 0;
+  /*--- MOBILE TOGGLE ---*/
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 9px 10px;
+    background: transparent;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background-color var(--ease);
   }
 
-  .navbar-default .navbar-nav > li > a {
-    color: #222;
+  .nav-toggle:hover {
+    background-color: var(--color-border);
+  }
+
+  .nav-toggle .bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: var(--color-text-muted);
+  }
+
+  /*
+   * Mobile dropdown. Animating `grid-template-rows` from 0fr to 1fr is a
+   * neat modern trick for transitioning to an unknown ("auto") height.
+   */
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: grid;
+    grid-template-rows: 0fr;
+    background: var(--color-bg);
+    transition: grid-template-rows 0.3s ease;
+  }
+
+  .site-nav.is-open .nav-menu {
+    grid-template-rows: 1fr;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav-links {
+    overflow: hidden;
+    list-style: none;
+    margin: 0;
+    padding: 0 var(--gutter);
+  }
+
+  .nav-links a {
+    display: block;
     padding: 10px;
-    border-bottom: 1px solid #DFDFDF;
+    line-height: 20px;
+    color: var(--color-text-strong);
+    border-bottom: 1px solid var(--color-border);
     font-weight: 400;
     text-transform: lowercase;
+  }
+
+  .nav-links li:last-child a {
+    border-bottom: none;
+  }
+
+  .nav-links a.selected {
+    color: var(--color-accent);
   }
 
   .nav-cat-icon {
@@ -94,59 +242,59 @@ import catSvg from '../assets/cat.svg';
     transition: transform 0.2s ease;
   }
 
-  .navbar-default .navbar-nav > li > a.selected {
-    color: #C46353;
-  }
-
-  .navbar-default a.navbar-brand:hover .navbar-default .navbar-nav > li > a:hover {
-    background-color: #DFDFDF;
-  }
-
-  .navbar-default .navbar-brand:hover {
-    color: #C46353;
-  }
-
-  @media screen and (min-width: 768px) {
-    .navbar-default {
-      height: 100px;
+  /*--- DESKTOP: brand on top, links in a row underneath ---*/
+  @media (min-width: 768px) {
+    .nav-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
     }
 
-    .navbar-header {
-      width: 100%;
-    }
-
-    .navbar-header .navbar-brand {
+    .nav-brand {
       height: 70px;
-      padding: 40px 0 0 15px;
+      padding-top: 10px;
       font-size: 38px;
     }
 
-    .navbar-default .navbar-nav > li > a {
-      padding: 0px 20px 9px 0;
+    .nav-toggle {
+      display: none;
     }
 
-    .navbar-default .navbar-nav > li > a:hover {
-      background-color: transparent;
-      color: #C46353;
+    .nav-menu {
+      position: static;
+      display: block;
+      background: none;
     }
 
-    .navbar-default .navbar-nav > li > a:hover .nav-cat-icon {
+    .nav-links {
+      display: flex;
+      overflow: visible;
+      padding: 0;
+    }
+
+    .nav-links a {
+      padding: 0 20px 9px 0;
+      border-bottom: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-accent);
+    }
+
+    .nav-links a:hover .nav-cat-icon {
       transform: translateY(-4px) scale(1.1);
     }
   }
 
-  @media screen and (min-width: 992px) {
-    .navbar-default {
-      height: 120px;
-    }
-
-    .navbar-header .navbar-brand {
+  @media (min-width: 992px) {
+    .nav-brand {
       height: 80px;
-      padding: 45px 0 0 15px;
       font-size: 42px;
     }
 
-    .navbar-default .navbar-nav > li > a {
+    .nav-links a {
       padding: 10px 25px 9px 0;
     }
   }

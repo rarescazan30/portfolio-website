@@ -7,7 +7,7 @@ const latestPosts = posts.slice(0, 3);
 ---
 
 <!-- ABOUT -->
-<div id="about" class="content-section">
+<section id="about" class="content-section">
   <div class="now-sidecar">
     <h4>now:</h4>
     <span class="now-timestamp">updated september 2026</span>
@@ -39,52 +39,47 @@ const latestPosts = posts.slice(0, 3);
     )}
   </div>
   <div class="container">
-    <div class="row">
-      <div class="col-sm-8 col-lg-7">
-        <h1>about me:</h1>
-        <p class="lead">
-          computer science student at POLITEHNICA University of Bucharest and undergraduate teaching assistant for Assembly and Operating Systems.
-        </p>
-        <p class="lead">
-          i like building software around concrete, messy problems. whether it's training computer-vision tools to teach CPR or configuring flight stacks for a stratospheric UAV, i care about making complex systems work reliably.
-        </p>
-        <p class="lead">
-          outside of engineering, i’m an avid reader of literature and philosophy. i write about the books and ideas that catch my attention over on my blog. you might be surprised how much philosophy you can bring into tech before it gets weird.
-        </p>
-        <div class="about-block">
-          <h4>status:</h4>
-          <p>actively seeking a 2027 software engineering internship in Europe.</p>
-          <p>currently open to hackathons, open-source contributions, and new collaborations.</p>
-        </div>
-        
-        <div class="about-block">
-          <h4>background:</h4>
-          <p>pursuing a Bachelor in Computer Science (expected july 2028).</p>
-          <p>mentoring student labs on low-level memory concepts (NASM) and Linux system administration (Bash/CLI).</p>
-          <p>experience across the stack, from kernel-level asynchronous C servers to pattern-driven Java architectures, embedded systems, agentic AI workflows, and more.</p>
-        </div>
-
-        <div class="about-block">
-          <h4>core tech stack:</h4>
-          <p><span class="category-title">languages:</span> C, Java, Python, C++, TypeScript, SQL, Assembly (NASM), Haskell.</p>
-          <p><span class="category-title">web &amp; backend:</span> Node.js, React, WebSockets, PostgreSQL, Docker, REST APIs.</p>
-          <p><span class="category-title">ai &amp; computer vision:</span> Agentic RAG, Vector Databases (ChromaDB), MediaPipe.</p>
-        </div>
-
-        <div class="about-block">
-          <h4>current focus:</h4>
-          <p><span class="project-tag">goMed:</span> architecting the real-time WebSocket backend (Supabase/PostgreSQL) and client-side MediaPipe/WebAssembly pose-tracking engine for a gamified CPR training application.</p>
-          <p><span class="project-tag">RegAdjudicator:</span> engineering a Python agentic RAG system with a ReAct orchestration loop and self-verifying citation pipeline to audit FDA/EMA regulatory divergence.</p>
-          <p><span class="project-tag">ROSPIN (NOTUS Project):</span> developing the autonomy stack for a stratospheric UAV, focusing on On-Board Computer (OBC) hardware selection, ArduPilot integration, and writing system automation scripts.</p>
-          <p><span class="project-tag">Faculty Students' League (IT Dept):</span> maintaining internal services, integrating third-party APIs for 500+ active users, and standardizing backend REST documentation with Swagger/OpenAPI.</p>
-        </div>
+    <div class="content-col">
+      <h1>about me:</h1>
+      <p class="lead">
+        computer science student at POLITEHNICA University of Bucharest and undergraduate teaching assistant for Assembly and Operating Systems.
+      </p>
+      <p class="lead">
+        i like building software around concrete, messy problems. whether it's training computer-vision tools to teach CPR or configuring flight stacks for a stratospheric UAV, i care about making complex systems work reliably.
+      </p>
+      <p class="lead">
+        outside of engineering, i’m an avid reader of literature and philosophy. i write about the books and ideas that catch my attention over on my blog. you might be surprised how much philosophy you can bring into tech before it gets weird.
+      </p>
+      <div class="about-block">
+        <h4>status:</h4>
+        <p>actively seeking a 2027 software engineering internship in Europe.</p>
+        <p>currently open to hackathons, open-source contributions, and new collaborations.</p>
+      </div>
+      
+      <div class="about-block">
+        <h4>background:</h4>
+        <p>pursuing a Bachelor in Computer Science (expected july 2028).</p>
+        <p>mentoring student labs on low-level memory concepts (NASM) and Linux system administration (Bash/CLI).</p>
+        <p>experience across the stack, from kernel-level asynchronous C servers to pattern-driven Java architectures, embedded systems, agentic AI workflows, and more.</p>
       </div>
 
-      <div class="col-sm-4 col-lg-5 hidden-xs">
+      <div class="about-block">
+        <h4>core tech stack:</h4>
+        <p><span class="category-title">languages:</span> C, Java, Python, C++, TypeScript, SQL, Assembly (NASM), Haskell.</p>
+        <p><span class="category-title">web &amp; backend:</span> Node.js, React, WebSockets, PostgreSQL, Docker, REST APIs.</p>
+        <p><span class="category-title">ai &amp; computer vision:</span> Agentic RAG, Vector Databases (ChromaDB), MediaPipe.</p>
+      </div>
+
+      <div class="about-block">
+        <h4>current focus:</h4>
+        <p><span class="project-tag">goMed:</span> architecting the real-time WebSocket backend (Supabase/PostgreSQL) and client-side MediaPipe/WebAssembly pose-tracking engine for a gamified CPR training application.</p>
+        <p><span class="project-tag">RegAdjudicator:</span> engineering a Python agentic RAG system with a ReAct orchestration loop and self-verifying citation pipeline to audit FDA/EMA regulatory divergence.</p>
+        <p><span class="project-tag">ROSPIN (NOTUS Project):</span> developing the autonomy stack for a stratospheric UAV, focusing on On-Board Computer (OBC) hardware selection, ArduPilot integration, and writing system automation scripts.</p>
+        <p><span class="project-tag">Faculty Students' League (IT Dept):</span> maintaining internal services, integrating third-party APIs for 500+ active users, and standardizing backend REST documentation with Swagger/OpenAPI.</p>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <style>
   #about {
@@ -92,7 +87,6 @@ const latestPosts = posts.slice(0, 3);
   }
 
   .now-sidecar {
-    font-family: 'Montserrat', sans-serif;
     position: absolute;
     top: 350px;
     right: 55px;
@@ -103,7 +97,7 @@ const latestPosts = posts.slice(0, 3);
   .now-sidecar h4 {
     font-size: 20px;
     font-weight: 500;
-    color: #C46353;
+    color: var(--color-accent);
     text-transform: lowercase;
     margin-top: 0;
     margin-bottom: 6px;
@@ -119,13 +113,13 @@ const latestPosts = posts.slice(0, 3);
   .now-sidecar h4:after {
     content: '';
     display: block;
-    border-bottom: 1px solid #DFDFDF;
+    border-bottom: 1px solid var(--color-border);
     padding-top: 3px;
   }
 
   .now-timestamp {
     font-size: 11.5px;
-    color: #888;
+    color: var(--color-text-subtle);
     text-transform: lowercase;
     display: block;
     margin-top: 6px;
@@ -135,12 +129,12 @@ const latestPosts = posts.slice(0, 3);
   .now-sidecar p {
     font-size: 14.5px;
     line-height: 1.65em;
-    color: #444;
+    color: var(--color-text-body);
     margin-bottom: 10px;
   }
 
   .now-sidecar .category-title {
-    color: #C46353;
+    color: var(--color-accent);
     font-weight: 500;
     display: inline;
   }
@@ -169,13 +163,13 @@ const latestPosts = posts.slice(0, 3);
     font-size: 14.5px;
     font-weight: 500;
     line-height: 1.45em;
-    color: #333;
+    color: var(--color-text);
     display: block;
     transition: color 0.2s ease;
   }
 
   .writing-link:hover .writing-title {
-    color: #C46353;
+    color: var(--color-accent);
   }
 
   .writing-meta {
@@ -187,15 +181,14 @@ const latestPosts = posts.slice(0, 3);
 
   .writing-date {
     font-size: 11.5px;
-    color: #9C9C9C;
+    color: var(--color-text-subtle);
     text-transform: lowercase;
   }
 
   .writing-tag {
-    font-family: 'Montserrat', sans-serif;
     font-size: 11px;
-    color: #D98A7D;
-    border: 1px solid #D98A7D;
+    color: var(--color-accent-soft);
+    border: 1px solid var(--color-accent-soft);
     border-radius: 2px;
     padding: 1px 5px;
     text-transform: lowercase;
@@ -222,7 +215,7 @@ const latestPosts = posts.slice(0, 3);
   #about h1 {
     font-size: 26px;
     font-weight: 500;
-    color: #C46353;
+    color: var(--color-accent);
     margin-top: 10px;
     margin-bottom: 12px;
     transition: transform 0.25s ease;
@@ -236,7 +229,7 @@ const latestPosts = posts.slice(0, 3);
   #about p.lead {
     font-size: 18px;
     line-height: 1.6em;
-    color: #333;
+    color: var(--color-text);
     margin-bottom: 22px;
   }
 
@@ -247,7 +240,7 @@ const latestPosts = posts.slice(0, 3);
   .about-block h4 {
     font-size: 14px;
     font-weight: 600;
-    color: #C46353;
+    color: var(--color-accent);
     text-transform: lowercase;
     letter-spacing: 0.5px;
     margin-bottom: 10px;
@@ -263,18 +256,18 @@ const latestPosts = posts.slice(0, 3);
   .about-block p {
     font-size: 14.5px;
     line-height: 1.65em;
-    color: #444;
+    color: var(--color-text-body);
     margin-bottom: 8px;
   }
 
   .category-title {
-    color: #111;
+    color: var(--color-text-strong);
     font-weight: 500;
     display: inline;
   }
 
   .project-tag {
-    color: #111;
+    color: var(--color-text-strong);
     font-weight: 500;
     display: inline;
   }

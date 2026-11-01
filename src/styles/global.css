@@ -1,0 +1,247 @@
+/*
+ * Global styles: design tokens, a small reset, base typography and layout.
+ *
+ * Every color on the site should come from a token below. Components never
+ * hardcode hex values; that way a theme (e.g. dark mode) only has to redefine
+ * these variables and everything follows.
+ */
+
+/*--- DESIGN TOKENS ---*/
+:root {
+  /* surfaces */
+  --color-bg: #FAF8F5;
+  --color-surface: #F4F1EB;
+  --color-surface-strong: #EFECE6;
+
+  /* text, from strongest to faintest */
+  --color-text-strong: #1a1a1a;
+  --color-text: #333;
+  --color-text-body: #444;
+  --color-text-muted: #666;
+  --color-text-subtle: #9C9C9C;
+
+  /* lines */
+  --color-border: #E8E5DF;
+  --color-border-strong: #D8D4CC;
+  --color-border-hover: #BAAF9F;
+
+  /* brand accent (terracotta) */
+  --color-accent: #C46353;
+  --color-accent-hover: #A34E40;
+  --color-accent-soft: #D98A7D;
+  --color-on-accent: #FAF8F5;
+
+  /* status */
+  --color-live: #2E8B57;
+  --color-success: #5B8266;
+  --color-error: #D64545;
+
+  /* third-party brand colors (contact buttons) */
+  --color-github: #24292E;
+  --color-linkedin: #0077B5;
+
+  /* shadows are tinted from the accent so they stay warm */
+  --shadow-soft: 0 4px 14px rgb(0 0 0 / 0.08);
+  --shadow-accent: 0 4px 15px color-mix(in srgb, var(--color-accent) 18%, transparent);
+
+  /* typography */
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* shape & motion */
+  --radius: 4px;
+  --ease: 0.25s ease;
+
+  /* layout */
+  --nav-height: 60px;
+  --gutter: 15px;
+}
+
+@media (min-width: 768px) {
+  :root { --nav-height: 100px; }
+}
+
+@media (min-width: 992px) {
+  :root { --nav-height: 120px; }
+}
+
+/*--- RESET ---*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  vertical-align: middle;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-text-strong);
+  margin: 10px 0;
+}
+
+h1, h2, h3 { margin-top: 20px; }
+h1 { font-size: 36px; }
+h2 { font-size: 30px; }
+h3 { font-size: 24px; }
+h4 { font-size: 18px; }
+h5 { font-size: 14px; }
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/*--- LAYOUT ---*/
+
+/* centered page column, same breakpoints the old Bootstrap container had */
+.container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@media (min-width: 768px)  { .container { max-width: 750px; } }
+@media (min-width: 992px)  { .container { max-width: 970px; } }
+@media (min-width: 1200px) { .container { max-width: 1170px; } }
+
+/* the narrower reading column most sections use */
+@media (min-width: 768px)  { .content-col { width: 66.666%; } }
+@media (min-width: 1200px) { .content-col { width: 58.333%; } }
+
+/*--- SECTIONS ---*/
+.content-section {
+  min-height: 100vh;
+  padding-top: 70px;
+  padding-bottom: 20px;
+}
+
+.content-section h1 {
+  color: var(--color-text-subtle);
+  font-weight: 400;
+  font-size: 30px;
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  transition: transform var(--ease);
+  cursor: default;
+}
+
+.content-section h1:hover {
+  transform: translateY(-2.5px);
+}
+
+.content-section h1::after {
+  content: '';
+  display: block;
+  border-bottom: 1px solid var(--color-border);
+  padding-top: 3px;
+}
+
+.lead {
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 25px;
+  color: var(--color-text);
+}
+
+@media (min-width: 768px) {
+  .content-section { padding-top: 130px; }
+  .content-section h1 { font-size: 34px; }
+  .lead { margin-bottom: 30px; }
+}
+
+@media (min-width: 992px) {
+  .content-section { padding-top: 160px; }
+  .content-section h1 { font-size: 38px; }
+  .content-section h1::after { padding-top: 5px; }
+  .lead { font-size: 21px; margin-bottom: 35px; }
+}
+
+@media (min-width: 1200px) {
+  .content-section h1::after { padding-top: 7px; }
+  .lead { font-size: 22px; }
+}
+
+/*--- SHARED BITS ---*/
+
+/* small outlined label used for post tags */
+.tag {
+  font-size: 13px;
+  color: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-soft);
+  border-radius: 2px;
+  padding: 2px 7px;
+  text-transform: lowercase;
+  line-height: 1.2;
+  display: inline-block;
+}
