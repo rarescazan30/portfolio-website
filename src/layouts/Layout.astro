@@ -16,6 +16,28 @@ const { title = "Rares Cazan" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+    <meta name="theme-color" content="#FAF8F5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#161412" media="(prefers-color-scheme: dark)" />
+
+    <!--
+      Apply a saved theme before first paint, so it never flashes the wrong one.
+      Re-applied after every client-side navigation, because Astro's router
+      replaces <html>'s attributes with the incoming page's.
+      No saved theme = no attribute, and CSS follows the OS setting.
+    -->
+    <script is:inline>
+      function applyStoredTheme() {
+        try {
+          const theme = localStorage.getItem('theme');
+          if (theme === 'light' || theme === 'dark') {
+            document.documentElement.dataset.theme = theme;
+          }
+        } catch {}
+      }
+      applyStoredTheme();
+      document.addEventListener('astro:after-swap', applyStoredTheme);
+    </script>
+
     <ClientRouter />
 
     <!-- Google Font: Montserrat -->

@@ -9,17 +9,29 @@ const onBlog = Astro.url.pathname.startsWith('/blog');
   <div class="container nav-inner">
     <a class="nav-brand" href="/">rc.log</a>
 
-    <button
-      type="button"
-      class="nav-toggle"
-      aria-expanded="false"
-      aria-controls="nav-menu"
-    >
-      <span class="sr-only">Toggle navigation</span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
+    <div class="nav-actions">
+      <button type="button" class="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z" />
+        </svg>
+        <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+      >
+        <span class="sr-only">Toggle navigation</span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
 
     <nav id="nav-menu" class="nav-menu" aria-label="Main">
       <ul class="nav-links">
@@ -60,9 +72,61 @@ const onBlog = Astro.url.pathname.startsWith('/blog');
     });
   }
 
+  type Theme = 'light' | 'dark';
+
+  function currentTheme(): Theme {
+    const forced = document.documentElement.dataset.theme;
+    if (forced === 'light' || forced === 'dark') return forced;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function setTheme(theme: Theme) {
+    document.documentElement.dataset.theme = theme;
+    try {
+      localStorage.setItem('theme', theme);
+    } catch {}
+  }
+
+  // Switch themes with a circle that grows out of the toggle button.
+  // The View Transitions API snapshots the page before and after `setTheme`,
+  // and we animate a clip-path on the "after" snapshot to reveal it.
+  function toggleTheme(button: HTMLElement) {
+    const next: Theme = currentTheme() === 'dark' ? 'light' : 'dark';
+
+    if (!document.startViewTransition || prefersReducedMotion()) {
+      setTheme(next);
+      return;
+    }
+
+    const { left, top, width, height } = button.getBoundingClientRect();
+    const x = left + width / 2;
+    const y = top + height / 2;
+    // distance to the farthest corner, so the circle ends up covering everything
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+
+    const root = document.documentElement;
+    root.classList.add('theme-transition');
+    const transition = document.startViewTransition(() => setTheme(next));
+
+    transition.ready.then(() => {
+      root.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+        {
+          duration: 600,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          pseudoElement: '::view-transition-new(root)',
+        }
+      );
+    });
+    transition.finished.finally(() => root.classList.remove('theme-transition'));
+  }
+
   function initNav() {
     const header = document.querySelector<HTMLElement>('.site-nav');
     if (!header) return;
+
+    const themeToggle = header.querySelector<HTMLButtonElement>('.theme-toggle')!;
+    themeToggle.addEventListener('click', () => toggleTheme(themeToggle));
 
     const toggle = header.querySelector<HTMLButtonElement>('.nav-toggle')!;
     const links = [...header.querySelectorAll<HTMLAnchorElement>('.nav-links a')];
@@ -129,7 +193,9 @@ const onBlog = Astro.url.pathname.startsWith('/blog');
     inset: 0 0 auto 0;
     z-index: 1030;
     height: var(--nav-height);
-    background: var(--color-bg);
+    background-color: var(--color-bg);
+    background-image: var(--bg-glow);
+    background-attachment: fixed;
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -160,6 +226,73 @@ const onBlog = Astro.url.pathname.startsWith('/blog');
   .nav-brand:focus-visible {
     color: var(--color-accent);
     transform: translateY(-2px);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /*--- THEME TOGGLE ---*/
+  .theme-toggle {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color var(--ease), background-color var(--ease);
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-accent);
+    background-color: var(--color-surface-strong);
+  }
+
+  /* both icons sit on top of each other; the inactive one is spun away */
+  .theme-toggle .icon {
+    position: absolute;
+    inset: 8px;
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+  }
+
+  .icon-sun {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+
+  /* dark theme: show the sun (click it to go back to light) */
+  :global(:root[data-theme="dark"]) .icon-sun {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(:root[data-theme="dark"]) .icon-moon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme="light"])) .icon-sun {
+      opacity: 1;
+      transform: none;
+    }
+
+    :global(:root:not([data-theme="light"])) .icon-moon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.5);
+    }
   }
 
   /*--- MOBILE TOGGLE ---*/
@@ -198,7 +331,9 @@ const onBlog = Astro.url.pathname.startsWith('/blog');
     right: 0;
     display: grid;
     grid-template-rows: 0fr;
-    background: var(--color-bg);
+    background-color: var(--color-bg);
+    background-image: var(--bg-glow);
+    background-attachment: fixed;
     transition: grid-template-rows 0.3s ease;
   }
 
@@ -244,7 +379,16 @@ const onBlog = Astro.url.pathname.startsWith('/blog');
 
   /*--- DESKTOP: brand on top, links in a row underneath ---*/
   @media (min-width: 768px) {
+    /* pinned to the right, vertically centered on the brand */
+    .nav-actions {
+      position: absolute;
+      top: 10px;
+      right: var(--gutter);
+      height: 60px;
+    }
+
     .nav-inner {
+      position: relative;
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
@@ -289,6 +433,10 @@ const onBlog = Astro.url.pathname.startsWith('/blog');
   }
 
   @media (min-width: 992px) {
+    .nav-actions {
+      top: 15px;
+    }
+
     .nav-brand {
       height: 80px;
       font-size: 42px;
